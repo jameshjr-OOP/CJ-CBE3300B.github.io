@@ -1,0 +1,78 @@
+/* =========================
+   Global defaults
+   ========================= */
+body {
+  background-color: #f5f5f5;
+  color: #2c3e50;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* =========================
+   Header
+   ========================= */
+.header-green {
+  background-color: #1e6f5c;
+  color: white;
+}
+
+/* Header text spacing */
+.header-green h1,
+.header-green h2,
+.header-green p {
+  margin-bottom: 0.75rem;
+}
+
+/* =========================
+   Navigation buttons
+   ========================= */
+.header-green nav {
+  margin-top: 1.5rem;
+}
+
+/* Make buttons ALWAYS visible */
+.header-green .btn {
+  color: white;
+  border-color: white;
+  opacity: 1;
+}
+
+/* Hover effect (subtle, readable) */
+.header-green .btn:hover {
+  background-color: white;
+  color: #1e6f5c;
+}
+
+/* =========================
+   Section layout
+   ========================= */
+section {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+/* Fix anchor offset so nav clicks don't hide headers */
+section {
+  scroll-margin-top: 120px;
+}
+
+/* =========================
+   Headings
+   ========================= */
+h2 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+/* =========================
+   Cards (if you use them later)
+   ========================= */
+.card {
+  border-radius: 12px;
+}
+
+/* =========================
+   Footer
+   ========================= */
+footer {
+  font-size: 0.9rem;
+}
