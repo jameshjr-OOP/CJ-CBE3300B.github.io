@@ -62,8 +62,83 @@
   <!-- GANTT Chart -->
   <section id="gantt" class="container py-5">
     <h2 class="text-primary">GANTT Chart</h2>
-    <p>Write GANTT Chart Section Here.</p>
+    <p class="text-muted">This table pulls live data from Google Sheets.</p>
+  
+    <div class="table-responsive">
+      <div id="sheet-table">Loading…</div>
+    </div>
   </section>
+  
+  <!-- PapaParse (robust CSV parsing) -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  
+  <script>
+    // IMPORTANT: replace with your published-to-web CSV URL
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQnVuBDbJ8Ixsd71iDGYwxxhoGw3gpQd2K_VOAbr6QpohzsvL9PAMZ1Zct25yvzZSLp4ARQXlTTmTS2/pub?gid=0&single=true&output=csv";
+  
+    // refresh every 60 seconds
+    const REFRESH_MS = 60_000;
+  
+    function renderTable(rows) {
+      if (!rows || rows.length === 0) {
+        document.getElementById("sheet-table").textContent = "No data found.";
+        return;
+      }
+  
+      const table = document.createElement("table");
+      table.className = "table table-bordered table-sm align-middle";
+      table.style.width = "100%";
+  
+      rows.forEach((row, rIdx) => {
+        const tr = document.createElement("tr");
+  
+        row.forEach((cell) => {
+          const el = document.createElement(rIdx === 0 ? "th" : "td");
+          el.textContent = (cell ?? "").toString();
+          tr.appendChild(el);
+        });
+  
+        table.appendChild(tr);
+      });
+  
+      const container = document.getElementById("sheet-table");
+      container.innerHTML = "";
+      container.appendChild(table);
+    }
+  
+    async function loadSheet() {
+      const res = await fetch(CSV_URL, { cache: "no-store" });
+      if (!res.ok) throw new Error("Failed to fetch CSV");
+  
+      const csvText = await res.text();
+  
+      const parsed = Papa.parse(csvText, {
+        skipEmptyLines: true
+      });
+  
+      if (parsed.errors && parsed.errors.length) {
+        console.warn("CSV parse warnings:", parsed.errors);
+      }
+  
+      renderTable(parsed.data);
+    }
+  
+    async function start() {
+      try {
+        await loadSheet();
+      } catch (e) {
+        console.error(e);
+        document.getElementById("sheet-table").textContent =
+          "Could not load sheet. Check the CSV URL and that the sheet is published.";
+      }
+  
+      setInterval(() => {
+        loadSheet().catch(console.error);
+      }, REFRESH_MS);
+    }
+  
+    start();
+  </script>
 
   <!-- Project Milestones -->
   <section id="milestones" class="container py-5">
