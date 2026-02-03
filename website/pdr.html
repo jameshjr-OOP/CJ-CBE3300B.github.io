@@ -15,13 +15,11 @@
   style="font-family:'Times New Roman', Times, serif;">
 
   <!-- Header -->
-  <header 
-    class="text-center py-5 header-green" style="background-color:#e6e6e6; color:black; font-family:'Times New Roman', Times, serif; padding: 0.75rem;">
+  <header class="text-center py-5 header-green" style="background-color:#e6e6e6; color:black; font-family:'Times New Roman', Times, serif; padding: 0.75rem;">
     <h1>CBE 3300B | Pulseometer</h1>
     <h2>Preliminary Design Report</h2>
 
-<nav 
-	style="position: sticky; top: 0; width: 100%; background-color: #e6e6e6; padding: 0.50rem; text-align: center; z-index: 1000;">
+<nav style="position: sticky; top: 0; width: 100%; background-color: #e6e6e6; padding: 0.50rem; text-align: center; z-index: 1000;">
 	
   <a href="#intro" class="btn m-2" style="color:black; border:1px solid black;">
     Introduction & Objectives
@@ -77,30 +75,93 @@
   
   <!-- Methodology & Theory -->
   <section id="methodology" class="container py-5">
-    <h2 class="text-primary">Methodology & Theory</h2>
-    <p>Write Methodology & Theory Section Here.</p>
+    <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem;">
+		Methodology & Theory
+	</h2>
+	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+	  
+    <p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		Write Methodology & Theory Section Here.
+	</p>
   </section>
   
   <!-- Engineering Design Constraints -->
   <section id="constraints" class="container py-5">
-    <h2 class="text-primary">Engineering Design Constraints</h2>
-    <p>Challenges in producing an effective & accurate pulsometer relate to understanding the interaction of light with human skin tissue, small signals with a large amount of background noise, user interaction with the equipment. 
-The focus point for our device is the finger, yet even the composition of the finger is very complex and tissue properties vary widely from person to person. In our device, light must travel through every skin layer (epidermis, dermis, and hypodermis), then through muscle, fascia, nerve tissue, and other connective tissue. Our device should be able to function regardless of skin color (as melanin content can change refractive behavior of light), fat content, or muscle content. While the patient is using the device, it should still be able to function under differing conditions of fingertip perspiration, slight finger movement, or changing external lighting conditions. We plan to account for these differences by using wavelengths of light that work regardless of skin absorbers (like melanin) and target the absorption spectra of oxygenated blood. We will account for friendly user design by using a finger clip that will block out external light sources and will grip tight enough to not be affected by user movement, but not so tight that it cuts off blood flow.
-A challenge we faced in CBE 3300A when creating a rudimentary pulsometer is making a small signal amplified and removing background signal and noise. The flushing of the skin that we are trying to detect is very minor, and creating a device to measure these slight changes could be likened to finding a needle in a haystack. There are many sources of background signal and noise for PPG, but absorption from other tissues, background light, and user movement were the largest. However, these factors generally do not change for an individual user while they are using the device, so it tends to result in a baseline DC signal that we have to filter out. What is important is making sure the signal is able to stand out after we remove everything else. We plan to deal with this by implementing new circuit design and signal processing techniques. 
-</p>
+    <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem;">
+		Engineering Design Constraints
+	</h2>
+	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+	  
+    <p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		Challenges in producing an effective & accurate pulsometer relate to understanding the interaction of light 
+		with human skin tissue, small signals with a large amount of background noise, user interaction with the equipment. 
+	</p>
+		
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		The focus point for our device is the finger, yet even the composition of the finger is very complex and tissue properties 
+		vary widely from person to person. In our device, light must travel through every skin layer (epidermis, dermis, and hypodermis), 
+		then through muscle, fascia, nerve tissue, and other connective tissue. Our device should be able to function regardless of skin color 
+		(as melanin content can change refractive behavior of light), fat content, or muscle content. While the patient is using the device, 
+		it should still be able to function under differing conditions of fingertip perspiration, slight finger movement, or changing external 
+		lighting conditions. We plan to account for these differences by using wavelengths of light that work regardless of skin absorbers (like melanin) 
+		and target the absorption spectra of oxygenated blood. We will account for friendly user design by using a finger clip that will block out external 
+		light sources and will grip tight enough to not be affected by user movement, but not so tight that it cuts off blood flow.
+	</p>
+		
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		A challenge we faced in CBE 3300A when creating a rudimentary pulsometer is making a small signal amplified and removing background signal and 
+		noise. The flushing of the skin that we are trying to detect is very minor, and creating a device to measure these slight changes could be 
+		likened to finding a needle in a haystack. There are many sources of background signal and noise for PPG, but absorption from other tissues, 
+		background light, and user movement were the largest. However, these factors generally do not change for an individual user while they are using 
+		the device, so it tends to result in a baseline DC signal that we have to filter out. What is important is making sure the signal is able to stand 
+		out after we remove everything else. We plan to deal with this by implementing new circuit design and signal processing techniques. 
+	</p>
   </section>
   
   <!-- Circuit Design & Signal Processing -->
   <section id="circuitdesign" class="container py-5">
-    <h2 class="text-primary">Circuit Design & Signal Processing</h2>
-    <p>This circuit is made up of four components. Going left to right, the first component is the finger cuff, this is where the patient interacts with the device. The finger cuff will be in the shape of a finger clip, with the IR LED and the photodiode positioned on opposite sides of the finger. The photodiode converts light into electrical current with a high sensitivity and linearity, which is helpful for the small signals we are working with. The second component is the transimpedance amplifier (TIA). The current from the photodiode flows to the negative terminal of the op-amp and through the gain-setting resistor. This creates a voltage at the output of the op-amp that is proportional to the input current - the capacitor helps reduce noise. Next is a simple highpass filter; we are removing the DC baseline signal that comes from the natural absorbance and scattering from the tissue. The last component is a non-inverting gain op-amp. This amplifies the signal by a factor of R2/R1 (the ratio of the resistor in the feedback loop to the resistor connected to ground). The capacitor in this stage blocks the DC signal that we added in the previous stage, amplifying only the AC signal that we care about.
-	The goal of this whole process is to isolate the signal we care about (absorbance from oxygenated hemoglobin) and amplify it while removing background signal / noise. In this circuit there is already signal processing with multiple built-in filters, but there is more signal processing that has to happen in arduino. In order to remove background noise from the environment, we can use background subtracted signal. We blink the IR LED on and off (50-500Hz) and measure the signal in the on versus off state. Subtracting these two values will give us a reading that is roughly independent of the surrounding conditions - like ambient lighting or different placements of the device on the finger. Furthermore, in order to give a heart rate in bpm, it is necessary to real-time peak detection on the signal. This peak detection becomes very hard with noisy signal, but assuming we can tune our filter appropriately, this peak detection can be done with a simple cut off. If the signal is higher than some predetermined baseline and the signal goes from increasing to decreasing (instantaneous derivative = 0) then we can mark a peak. Time average between peaks gives the users real-time bpm. 
-</p>
+    <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem;">
+		Circuit Design & Signal Processing
+	</h2>
+	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+	  
+    <p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		This circuit is made up of four components. Going left to right, the first component is the finger cuff, 
+		this is where the patient interacts with the device. The finger cuff will be in the shape of a finger 
+		clip, with the IR LED and the photodiode positioned on opposite sides of the finger. The photodiode 
+		converts light into electrical current with a high sensitivity and linearity, which is helpful for the 
+		small signals we are working with. The second component is the transimpedance amplifier (TIA). The current 
+		from the photodiode flows to the negative terminal of the op-amp and through the gain-setting resistor. 
+		This creates a voltage at the output of the op-amp that is proportional to the input current - the capacitor 
+		helps reduce noise. Next is a simple highpass filter; we are removing the DC baseline signal that comes from 
+		the natural absorbance and scattering from the tissue. The last component is a non-inverting gain op-amp. 
+		This amplifies the signal by a factor of R2/R1 (the ratio of the resistor in the feedback loop to the resistor 
+		connected to ground). The capacitor in this stage blocks the DC signal that we added in the previous stage,
+		amplifying only the AC signal that we care about.
+	</p>
+		
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		The goal of this whole process is to isolate the signal we care about (absorbance from oxygenated hemoglobin) 
+		and amplify it while removing background signal / noise. In this circuit there is already signal processing
+		with multiple built-in filters, but there is more signal processing that has to happen in arduino. In order 
+		to remove background noise from the environment, we can use background subtracted signal. We blink the IR LED
+		on and off (50-500Hz) and measure the signal in the on versus off state. Subtracting these two values will give
+		us a reading that is roughly independent of the surrounding conditions - like ambient lighting or different 
+		placements of the device on the finger. Furthermore, in order to give a heart rate in bpm, it is necessary to 
+		real-time peak detection on the signal. This peak detection becomes very hard with noisy signal, but assuming 
+		we can tune our filter appropriately, this peak detection can be done with a simple cut off. If the signal is 
+		higher than some predetermined baseline and the signal goes from increasing to decreasing (instantaneous derivative = 0) 
+		then we can mark a peak. Time average between peaks gives the users real-time bpm. 
+	</p>
   </section>
   
   <!-- Timeline -->
   <section id="timeline" class="container py-5">
-    <h2 class="text-primary">Timeline</h2>
+    <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem;">
+		Timeline
+	</h2>
+	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+	  
     <div class="ratio ratio-16x9">
       <iframe
         src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQnVuBDbJ8Ixsd71iDGYwxxhoGw3gpQd2K_VOAbr6QpohzsvL9PAMZ1Zct25yvzZSLp4ARQXlTTmTS2/pubhtml?gid=0&single=true&widget=true&headers=false"
@@ -109,49 +170,97 @@ A challenge we faced in CBE 3300A when creating a rudimentary pulsometer is maki
         allowfullscreen
       ></iframe>
     </div>
+	  
   </section>
   
   <!-- Economic Considerations -->
   <section id="economy" class="container py-5">
-    <h2 class="text-primary">Economic Considerations</h2>
-    <p>The global market for wearable healthcare devices is projected to increase by $75.98 billion by 2030, representing a 67.76% increase over its 2025 value. Over this forecast period, the market is expected to grow at a compound annual growth rate (CAGR) of 10.9%. This shows the demand for wearable healthcare devices will continue to grow. This market includes devices that measure pulse, blood-oxygen levels, glucose, insulin, and more with the purpose of focusing on this market because there isn’t an explicit pulsometer market, only a pulse oximeter market. For the SWOT analysis, we have identified the following:
-Strength: Our product only has one feature and so our focus is to have the pulse readings more accurate than other products. 
-Weakness: Since we are using an arduino, the product will be more clunky to wear. 
-Opportunity: general health awareness amongst people is rising, making it more likely our product will sell.
-Threat: Most pulsometers on the market also function as an oximeter, making our product have less features than competitors.
-</p>
+    <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem;">
+		Economic Considerations
+	</h2>
+	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+	  
+    <p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		The global market for wearable healthcare devices is projected to increase by $75.98 billion 
+		by 2030, representing a 67.76% increase over its 2025 value. Over this forecast period, the 
+		market is expected to grow at a compound annual growth rate (CAGR) of 10.9%. This shows the 
+		demand for wearable healthcare devices will continue to grow. This market includes devices that 
+		measure pulse, blood-oxygen levels, glucose, insulin, and more with the purpose of focusing on 
+		this market because there isn’t an explicit pulsometer market, only a pulse oximeter market. 
+		For the SWOT analysis, we have identified the following:
+	</p>
+
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		Strength: Our product only has one feature and so our focus is to have the pulse readings more accurate 
+		than other products. 
+	</p>
+
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		Weakness: Since we are using an arduino, the product will be more clunky to wear. 
+	</p>
+
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		Opportunity: general health awareness amongst people is rising, making it more likely our product will sell.
+	</p>
+
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		Threat: Most pulsometers on the market also function as an oximeter, making our product have less features than 
+		competitors.
+	</p>
   </section>
   
   <!-- Materials List -->
   <section id="matlist" class="container py-5">
-    <h2 class="text-primary">Materials List</h2>
-    <p>Circuit components 
-UV LED: TSAL6100 (or SFH 4545) link (amazon)
-Photodiode: BPW34 (or SFH 203) link (amazon)
-Mega Ohm precision resistors link (amazon) 
-10k, 1k Ohm resistors, already in lab
-10nf, 560nf, 10uf capacitors, already in lab
-LM358 dual op-amp: already in lab
-74HC00 chip: already in lab
-Breadboard / solderable breadboard: already in lab
-Jumper cables: already in lab
-Soldering: already in lab
-Mini oscilloscope / liquid crystal display (to be purchased later after prototype functioning) mini oscilloscope
-Arduino Uno
-USB-A to USB-B cable
-Laptop
-Finger clip
-3D printer / associated printing material: already in lab
-Small coil spring (dimensions tbd based on measured finger sizes)
-</p>
+    <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem;">
+		Materials List
+	</h2>
+	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+	  
+    <p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		Circuit components 
+		UV LED: TSAL6100 (or SFH 4545) link (amazon)
+		Photodiode: BPW34 (or SFH 203) link (amazon)
+		Mega Ohm precision resistors link (amazon) 
+		10k, 1k Ohm resistors, already in lab
+		10nf, 560nf, 10uf capacitors, already in lab
+		LM358 dual op-amp: already in lab
+		74HC00 chip: already in lab
+		Breadboard / solderable breadboard: already in lab
+		Jumper cables: already in lab
+		Soldering: already in lab
+		Mini oscilloscope / liquid crystal display (to be purchased later after prototype functioning) mini oscilloscope
+		Arduino Uno
+		USB-A to USB-B cable
+		Laptop
+		Finger clip
+		3D printer / associated printing material: already in lab
+		Small coil spring (dimensions tbd based on measured finger sizes)
+	</p>
   </section>
   
   <!-- Future Considerations -->
   <section id="future" class="container py-5">
-    <h2 class="text-primary">Future Considerations</h2>
-    <p>The goal of this project is to create a commercially viable pulseometer, but in order to do this faithfully we would need to include blood oximetry measurements, as previously mentioned. In order to do this we would need a second LED of a lower wavelength (in the visible red spectrum) and we would need to process that second signal in real time, same as the IR signal. With a device using this dual-LED set up, we could measure far more complex bodily functions, like sleep tracking workout activity, similar to products like a fitbit or apple watch. 
-	Another goal would be to improve the user experience. The circuit described above will be bulky, and therefore difficult to take on the go. If we could miniaturize this circuit on a printed circuit board, and use a much smaller microcontroller, then we could embed the device entirely onto the finger clip, and use bluetooth to communicate with a computer or a phone. Depending on project progress, we would love to try incorporating some or all of these in order to make a more commercially viable product. 
-</p>
+    <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem;">
+		Future Considerations
+	</h2>
+	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+	  
+    <p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		The goal of this project is to create a commercially viable pulseometer, but in order 
+		to do this faithfully we would need to include blood oximetry measurements, as previously 
+		mentioned. In order to do this we would need a second LED of a lower wavelength (in the visible red spectrum) 
+		and we would need to process that second signal in real time, same as the IR signal. With a device using this 
+		dual-LED set up, we could measure far more complex bodily functions, like sleep tracking workout activity, 
+		similar to products like a fitbit or apple watch. 
+	</p>
+
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		Another goal would be to improve the user experience. The circuit described above will be bulky, and therefore 
+		difficult to take on the go. If we could miniaturize this circuit on a printed circuit board, and use a much 
+		smaller microcontroller, then we could embed the device entirely onto the finger clip, and use bluetooth to 
+		communicate with a computer or a phone. Depending on project progress, we would love to try incorporating some 
+		or all of these in order to make a more commercially viable product. 
+	</p>
   </section>
 
   <!-- Footer -->
