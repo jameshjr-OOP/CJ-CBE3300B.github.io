@@ -58,20 +58,23 @@
   <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
   <p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-    A pulseometer is a wearable device to measure a user's real-time heart rate.
-    Pulseometers are commonplace for use in both medical settings and at-home
-    patient care. Commercial pulseometers measure heart rate (bpm) and peripheral
-    blood oxygen saturation (SpO₂). These measurements are useful for everyday
-    health monitoring, particularly for patients with conditions affecting the
-    lungs or heart.
+    A pulseometer is a wearable device to measure a user's real-time heart rate. 
+	  Pulseometers are commonplace for use in both medical settings and at-home patient care. 
+	  Commercial pulseometers measure heart rate (bpm) and peripheral blood oxygen saturation (SpO2). 
+	  These measurements are useful for everyday health monitoring, but are particularly 
+	  important for patients with conditions affecting the lungs or heart - like COPD, COVID-19, 
+	  or heart disease.
   </p>
 
   <p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-    Using the principles of photoplethysmography, this device detects subtle
-    flushing that occurs when blood flows through capillaries near the surface
-    of the skin. Through signal processing, this information is converted into
-    a real-time heart rate. Oxygen saturation is outside the scope of this
-    project but may be considered in future iterations.
+    This Preliminary design report will give the underlying theory for this device and outline 
+	  our plan for the design of this device, with the goal that it could be marketed as a 
+	  commercially viable finger clip pulseometer. It will incorporate real-time heart rate 
+	  monitoring with a user-friendly design and visual display. Using the principles of photoplethysmography, 
+	  we will be able to detect the subtle flushing that occurs when blood flows through capillary arteries near 
+	  the surface of the skin. Then, using various signal processing methods, we will turn this information into 
+	  a heart rate. This device will not measure oxygen saturation as that is outside the scope of this course, 
+	  but could be considered in future iterations of this project. 
   </p>
 </section>
   
@@ -83,8 +86,109 @@
 	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
     <p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-		Write Methodology & Theory Section Here.
+		Our pulseometer, like commercial products, is based on photoplethysmography (PPG). PPG is an optical 
+		technique based on the Beer-Lambert law, and it can be used to measure physiologic information about a 
+		patient. When a patient’s skin is illuminated with specific wavelengths of light, the absorbance fluctuates 
+		in accordance with the flow of blood through that area of tissue. If one can measure this real-time absorbance, 
+		it is possible to extract information about not only heart rate, but blood oxygen saturation, respiratory rate, 
+		and even sleep quality
 	</p>
+
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		Our project will use transmittance PPG, where the light source is positioned opposite 
+		to the light collecting device, so the signal must travel through the appendage (fingertip) 
+		as demonstrated in the figure. In order to pick up small absorbance changes in pulsatile artery blood, 
+		we need to understand the optical properties of tissue and blood. Considering we are using transmittance 
+		PPG, light must be able to travel through the fingertip without getting completely absorbed or scattered out. 
+		Light scattering in tissue can be modeled with a power law relationship:
+	</p>
+
+	<div style="text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 1.5rem; margin: 1.5rem 0;">
+  		μ<sub>s</sub><sup>′</sup> ∝ λ<sup>−b</sup>
+	</div>
+
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		μ<sub>s</sub><sup>′</sup> = scattering coefficient [1/length]
+	</p>
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		λ = wavelength of light
+	</p>
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		b =  scattering “strength” [dimensionless]
+	</p>
+
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		Depending on the tissue, b could be anywhere between 0.7-1.5. It is clear that as wavelength decreases, 
+		scattering increases, and we see a similar trend for absorption. Absorption follows the Beer-Lambert law:
+	</p>
+
+	<div style="text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 1.5rem; margin: 1.5rem 0;">
+  		A = &epsilon;Lc
+	</div>
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		Which can be re-expressed as:
+	</p>
+	<div style="text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 1.5rem; margin: 1.5rem 0;">
+  		<span style="display:inline-block;">
+    		<span style="font-style: italic;">I</span>/<span style="font-style: italic;">I</span><sub>0</sub>
+    			&nbsp;=&nbsp;
+    			10<sup>−A</sup>
+    			&nbsp;=&nbsp;
+    			10<sup>−εLc</sup>
+    			&nbsp;=&nbsp;
+   				e<sup>−μ<sub>a</sub>A</sup>
+  		</span>
+	</div>
+
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		A = Absorbance [dimensionless]
+	</p>
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		ε = molar extinction coefficient [1 / concentration*length]
+	</p>
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		L = path length
+	</p>
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		c = concentration
+	</p>
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		I<sub>0</sub> = Indecent intensity [power/area]
+	</p>
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		I = transmitted intensity [power/area]
+	</p>
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		&mu;<sub>a</sub> = absorption coefficient [1/length]
+	</p>
+
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		Re-arranging the expressions above we see that &mu;<sub>a</sub> ∝ c&epsilon;. However, in tissue samples this becomes 
+		slightly more complicated, as the Beer-Lambert law assumes the presence of only one absorber. In skin and tissue there 
+		are many absorbers, so we can express this with a sum:
+	</p>
+
+	<div style="text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 1.5rem; margin: 1.5rem 0;">
+  		μ<sub>a</sub> ∝ Σ<sub>i</sub> c<sub>i</sub> ε<sub>i</sub>
+	</div>
+
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		Each of these absorbers has slightly different molar extinction coefficients (melanin and other chromophores
+		in the skin exhibit strong light absorption in the 200-500nm range, whereas water and lipids become more 
+		significant past 800nm). Absorbance is not as simple as scattering, but in general molar extinction coefficients for 
+		relevant organic molecules in the skin become stronger at lower wavelengths. Therefore if the goal is for light to travel 
+		all the way through tissue, it is more helpful to use a higher wavelength of light. It must still be a wavelength that can 
+		pick up on vascular activity; that is, it must be absorbed or scattered just enough so that we can detect a change when blood 
+		flow is occurring.
+	</p>
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		Deoxygenated and oxygenated hemoglobin absorb some wavelengths light equally (red-NIR), but some wavelengths differently, 
+		and this contrast allows us to collect absorbance data. Infrared light (850-1000nm) is more absorbed by oxygenated hemoglobin, 
+		while deoxygenated hemoglobin has stronger absorption of red light (650–750nm). In commercial devices, the difference between 
+		these absorbance ranges allows one to measure blood oxygen saturation. However, for the purpose of this device we will therefore
+		be using infrared light, as it will have enough penetration depth into the tissue to be detected with transmittance PPG while 
+		also being sufficiently scattered / absorbed by oxygenated blood for us to detect it.  
+	</p>  
   </section>
   
   <!-- Engineering Design Constraints -->
@@ -95,28 +199,31 @@
 	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
     <p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-		Challenges in producing an effective & accurate pulsometer relate to understanding the interaction of light 
-		with human skin tissue, small signals with a large amount of background noise, user interaction with the equipment. 
+		Challenges in producing an effective & accurate pulsometer relate to understanding the 
+		interaction of light with human skin tissue, small signals with a large amount of background noise, 
+		user interaction with the equipment. 
 	</p>
 		
 	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-		The focus point for our device is the finger, yet even the composition of the finger is very complex and tissue properties 
-		vary widely from person to person. In our device, light must travel through every skin layer (epidermis, dermis, and hypodermis), 
-		then through muscle, fascia, nerve tissue, and other connective tissue. Our device should be able to function regardless of skin color 
-		(as melanin content can change refractive behavior of light), fat content, or muscle content. While the patient is using the device, 
-		it should still be able to function under differing conditions of fingertip perspiration, slight finger movement, or changing external 
-		lighting conditions. We plan to account for these differences by using wavelengths of light that work regardless of skin absorbers (like melanin) 
-		and target the absorption spectra of oxygenated blood. We will account for friendly user design by using a finger clip that will block out external 
-		light sources and will grip tight enough to not be affected by user movement, but not so tight that it cuts off blood flow.
+		The focus point for our device is the finger, yet even the composition of the finger is very complex 
+		and tissue properties vary widely from person to person. In our device, light must travel through every skin layer 
+		(epidermis, dermis, and hypodermis), then through muscle, fascia, nerve tissue, and other connective tissue. Our device
+		should be able to function regardless of skin color (as melanin content can change refractive behavior of light), fat content, 
+		or muscle content. While the patient is using the device, it should still be able to function under differing conditions of 
+		fingertip perspiration, slight finger movement, or changing external lighting conditions. We plan to account for these differences 
+		by using wavelengths of light that work regardless of skin absorbers (like melanin) and target the absorption spectra of oxygenated 
+		blood. We will account for friendly user design by using a finger clip that will block out external light sources and will grip tight 
+		enough to not be affected by user movement, but not so tight that it cuts off blood flow.
 	</p>
 		
 	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-		A challenge we faced in CBE 3300A when creating a rudimentary pulsometer is making a small signal amplified and removing background signal and 
-		noise. The flushing of the skin that we are trying to detect is very minor, and creating a device to measure these slight changes could be 
-		likened to finding a needle in a haystack. There are many sources of background signal and noise for PPG, but absorption from other tissues, 
-		background light, and user movement were the largest. However, these factors generally do not change for an individual user while they are using 
-		the device, so it tends to result in a baseline DC signal that we have to filter out. What is important is making sure the signal is able to stand 
-		out after we remove everything else. We plan to deal with this by implementing new circuit design and signal processing techniques. 
+		A challenge we faced in CBE 3300A when creating a rudimentary pulsometer is making a small signal amplified and 
+		removing background signal and noise. The flushing of the skin that we are trying to detect is very minor, and creating
+		a device to measure these slight changes could be likened to finding a needle in a haystack. There are many sources of 
+		background signal and noise for PPG, but absorption from other tissues, background light, and user movement were the largest. 
+		However, these factors generally do not change for an individual user while they are using the device, so it tends to result 
+		in a baseline DC signal that we have to filter out. What is important is making sure the signal is able to stand out after we 
+		remove everything else. We plan to deal with this by implementing new circuit design and signal processing techniques. 
 	</p>
   </section>
   
@@ -126,34 +233,35 @@
 		Circuit Design & Signal Processing
 	</h2>
 	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		Most current circuit design shown below:
+	</p>
 	  
     <p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-		This circuit is made up of four components. Going left to right, the first component is the finger cuff, 
-		this is where the patient interacts with the device. The finger cuff will be in the shape of a finger 
-		clip, with the IR LED and the photodiode positioned on opposite sides of the finger. The photodiode 
-		converts light into electrical current with a high sensitivity and linearity, which is helpful for the 
-		small signals we are working with. The second component is the transimpedance amplifier (TIA). The current 
-		from the photodiode flows to the negative terminal of the op-amp and through the gain-setting resistor. 
-		This creates a voltage at the output of the op-amp that is proportional to the input current - the capacitor 
-		helps reduce noise. Next is a simple highpass filter; we are removing the DC baseline signal that comes from 
-		the natural absorbance and scattering from the tissue. The last component is a non-inverting gain op-amp. 
-		This amplifies the signal by a factor of R2/R1 (the ratio of the resistor in the feedback loop to the resistor 
-		connected to ground). The capacitor in this stage blocks the DC signal that we added in the previous stage,
-		amplifying only the AC signal that we care about.
+			This circuit is made up of four components. Going left to right, the first component is the finger cuff, 
+		this is where the patient interacts with the device. The finger cuff will be in the shape of a finger clip, with the 
+		IR LED and the photodiode positioned on opposite sides of the finger. The photodiode converts light into electrical 
+		current with a high sensitivity and linearity, which is helpful for the small signals we are working with. The second 
+		component is the transimpedance amplifier (TIA). The current from the photodiode flows to the negative terminal of the 
+		op-amp and through the gain-setting resistor. This creates a voltage at the output of the op-amp that is proportional 
+		to the input current - the capacitor helps reduce noise. Next is a simple highpass filter; we are removing the DC baseline 
+		signal that comes from the natural absorbance and scattering from the tissue. The last component is a non-inverting gain op-amp. 
+		This amplifies the signal by a factor of R2/R1 (the ratio of the resistor in the feedback loop to the resistor connected to ground). 
+		The capacitor in this stage blocks the DC signal that we added in the previous stage, amplifying only the AC signal that we care about.
 	</p>
 		
 	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-		The goal of this whole process is to isolate the signal we care about (absorbance from oxygenated hemoglobin) 
-		and amplify it while removing background signal / noise. In this circuit there is already signal processing
-		with multiple built-in filters, but there is more signal processing that has to happen in arduino. In order 
-		to remove background noise from the environment, we can use background subtracted signal. We blink the IR LED
-		on and off (50-500Hz) and measure the signal in the on versus off state. Subtracting these two values will give
-		us a reading that is roughly independent of the surrounding conditions - like ambient lighting or different 
-		placements of the device on the finger. Furthermore, in order to give a heart rate in bpm, it is necessary to 
-		real-time peak detection on the signal. This peak detection becomes very hard with noisy signal, but assuming 
-		we can tune our filter appropriately, this peak detection can be done with a simple cut off. If the signal is 
-		higher than some predetermined baseline and the signal goes from increasing to decreasing (instantaneous derivative = 0) 
-		then we can mark a peak. Time average between peaks gives the users real-time bpm. 
+		The goal of this whole process is to isolate the signal we care about (absorbance from oxygenated hemoglobin)
+		and amplify it while removing background signal / noise. In this circuit there is already signal processing with 
+		multiple built-in filters, but there is more signal processing that has to happen in arduino. In order to remove 
+		background noise from the environment, we can use background subtracted signal. We blink the IR LED on and off (50-500Hz) 
+		and measure the signal in the on versus off state. Subtracting these two values will give us a reading that is roughly 
+		independent of the surrounding conditions - like ambient lighting or different placements of the device on the finger. 
+		Furthermore, in order to give a heart rate in bpm, it is necessary to real-time peak detection on the signal. This peak 
+		detection becomes very hard with noisy signal, but assuming we can tune our filter appropriately, this peak detection can 
+		be done with a simple cut off. If the signal is higher than some predetermined baseline and the signal goes from increasing 
+		to decreasing (instantaneous derivative = 0) then we can mark a peak. Time average between peaks gives the users real-time bpm. 
 	</p>
   </section>
   
@@ -172,6 +280,20 @@
         allowfullscreen
       ></iframe>
     </div>
+
+	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+		The GANTT chart has our projected timeline of the project based on the milestones presented. 
+		The deliverables are very direct. There will be six deliverables throughout the project:
+	</p>
+	  
+	<ol>
+  		<li>Preliminary Design Report and Presentation</li>
+ 		<li>Initial Project Design Presentation</li>
+  		<li>Initial Prototype of Product</li>
+		<li>Intermediate Prototype of Product</li>
+		<li>Minimal Viable Product</li>
+		<li>Final Project Report and Presentation</li>
+	</ol>
 	  
   </section>
   
@@ -218,26 +340,31 @@
 	</h2>
 	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
-    <p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-		Circuit components 
-		UV LED: TSAL6100 (or SFH 4545) link (amazon)
-		Photodiode: BPW34 (or SFH 203) link (amazon)
-		Mega Ohm precision resistors link (amazon) 
-		10k, 1k Ohm resistors, already in lab
-		10nf, 560nf, 10uf capacitors, already in lab
-		LM358 dual op-amp: already in lab
-		74HC00 chip: already in lab
-		Breadboard / solderable breadboard: already in lab
-		Jumper cables: already in lab
-		Soldering: already in lab
-		Mini oscilloscope / liquid crystal display (to be purchased later after prototype functioning) mini oscilloscope
-		Arduino Uno
-		USB-A to USB-B cable
-		Laptop
-		Finger clip
-		3D printer / associated printing material: already in lab
-		Small coil spring (dimensions tbd based on measured finger sizes)
-	</p>
+    <ul>
+	  <li>
+	    Circuit components
+	    <ul>
+	      <li>UV LED: TSAL6100 (or SFH 4545)</a></li>
+	      <li>Photodiode: BPW34 (or SFH 203)</a></li>
+	      <li>Mega Ohm precision resistors</li>
+	      <li>10k, 1k Ohm resistors, already in lab</li>
+	      <li>10 nF, 560 nF, 10 µF capacitors, already in lab</li>
+	      <li>LM358 dual op-amp, already in lab</li>
+	      <li>74HC00 chip, already in lab</li>
+	      <li>Breadboard / solderable breadboard, already in lab</li>
+	      <li>Jumper cables, already in lab</li>
+	      <li>Soldering equipment, already in lab</li>
+	      <li>Mini oscilloscope / LCD display (to be purchased after prototype functioning)</li>
+	    </ul>
+	  </li>
+	  <li>Arduino Uno</li>
+	  <li>USB-A to USB-B cable</li>
+	  <li>Laptop</li>
+	  <li>Finger clip</li>
+	  <li>3D printer / associated printing material, already in lab</li>
+	  <li>Small coil spring (dimensions TBD based on measured finger sizes)</li>
+	</ul>
+
   </section>
   
   <!-- Future Considerations -->
@@ -248,20 +375,21 @@
 	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
     <p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-		The goal of this project is to create a commercially viable pulseometer, but in order 
-		to do this faithfully we would need to include blood oximetry measurements, as previously 
-		mentioned. In order to do this we would need a second LED of a lower wavelength (in the visible red spectrum) 
-		and we would need to process that second signal in real time, same as the IR signal. With a device using this 
-		dual-LED set up, we could measure far more complex bodily functions, like sleep tracking workout activity, 
-		similar to products like a fitbit or apple watch. 
+		The goal of this project is to create a commercially viable pulseometer, but in 
+		order to do this faithfully we would need to include blood oximetry measurements, 
+		as previously mentioned. In order to do this we would need a second LED of a lower 
+		wavelength (in the visible red spectrum) and we would need to process that second signal 
+		in real time, same as the IR signal. With a device using this dual-LED set up, we could 
+		measure far more complex bodily functions, like sleep tracking workout activity, similar 
+		to products like a fitbit or apple watch. 
 	</p>
 
 	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-		Another goal would be to improve the user experience. The circuit described above will be bulky, and therefore 
-		difficult to take on the go. If we could miniaturize this circuit on a printed circuit board, and use a much 
-		smaller microcontroller, then we could embed the device entirely onto the finger clip, and use bluetooth to 
-		communicate with a computer or a phone. Depending on project progress, we would love to try incorporating some 
-		or all of these in order to make a more commercially viable product. 
+		Another goal would be to improve the user experience. The circuit described above will be bulky, 
+		and therefore difficult to take on the go. If we could miniaturize this circuit on a printed circuit 
+		board, and use a much smaller microcontroller, then we could embed the device entirely onto the finger 
+		clip, and use bluetooth to communicate with a computer or a phone. Depending on project progress, we 
+		would love to try incorporating some or all of these in order to make a more commercially viable product. 
 	</p>
   </section>
 
