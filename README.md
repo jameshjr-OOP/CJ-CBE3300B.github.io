@@ -1,2 +1,3 @@
 # Conor D. and James H. CBE 3300B Pulseometer
 [Webpage for our pulseometer product](https://jameshjr-oop.github.io/CJ-CBE3300B.github.io/)
+Our company’s first commercial product is a pulsometer designed to measure a user’s pulse using infrared (IR) light. By leveraging optical sensing principles, the device provides accurate, real-time heart rate monitoring in a compact and accessible form. Throughout the development process, this website will be updated regularly to document progress, design decisions, and key milestones. Our goal is to deliver a fully functional and viable prototype by April 23, 2026. 
