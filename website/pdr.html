@@ -17,7 +17,7 @@
   <!-- Header -->
   <header class="text-center py-3" style="background-color:#01256E; color:white; font-family: Arial, Helvetica, sans-serif; padding:0.50rem; font-weight: bold;">
     <h1 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
-		CBE 3300B | Pulseometer</h1>
+		CROI | Pulseometer Technology</h1>
     <h2 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
 		Preliminary Design Report</h2>
 
@@ -107,17 +107,13 @@
   		μ<sub>s</sub><sup>′</sup> ∝ λ<sup>−b</sup>
 	</div>
 
-	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-		μ<sub>s</sub><sup>′</sup> = scattering coefficient [1/length]
-	</p>
-	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-		λ = wavelength of light
-	</p>
-	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-		b =  scattering “strength” [dimensionless]
-	</p>
+	<ul style="list-style: none; font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+	  	<li>μ<sub>s</sub><sup>′</sup> = scattering coefficient [1/length]</li>
+		<li>λ = wavelength of light</li>
+		<li>b =  scattering “strength” [dimensionless]</li>
+	</ul>
 
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		Depending on the tissue, b could be anywhere between 0.7-1.5. It is clear that as wavelength decreases, 
 		scattering increases, and we see a similar trend for absorption. Absorption follows the Beer-Lambert law:
 	</p>
@@ -140,29 +136,17 @@
   		</span>
 	</div>
 
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-		A = Absorbance [dimensionless]
-	</p>
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-		ε = molar extinction coefficient [1 / concentration*length]
-	</p>
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-		L = path length
-	</p>
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-		c = concentration
-	</p>
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-		I<sub>0</sub> = Indecent intensity [power/area]
-	</p>
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-		I = transmitted intensity [power/area]
-	</p>
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
-		&mu;<sub>a</sub> = absorption coefficient [1/length]
-	</p>
+	<ul style="list-style: none; font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+	  	<li>A = Absorbance [dimensionless]</li>
+		<li>ε = molar extinction coefficient [1 / concentration*length]</li>
+		<li>L = path length</li>
+		<li>c = concentration</li>
+		<li>I<sub>0</sub> = Indecent intensity [power/area]</li>
+		<li>I = transmitted intensity [power/area]</li>
+		<li>&mu;<sub>a</sub> = absorption coefficient [1/length]</li>
+	</ul>
 
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		Re-arranging the expressions above we see that &mu;<sub>a</sub> ∝ c&epsilon;. However, in tissue samples this becomes 
 		slightly more complicated, as the Beer-Lambert law assumes the presence of only one absorber. In skin and tissue there 
 		are many absorbers, so we can express this with a sum:
@@ -172,7 +156,7 @@
   		μ<sub>a</sub> ∝ Σ<sub>i</sub> c<sub>i</sub> ε<sub>i</sub>
 	</div>
 
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		Each of these absorbers has slightly different molar extinction coefficients (melanin and other chromophores
 		in the skin exhibit strong light absorption in the 200-500nm range, whereas water and lipids become more 
 		significant past 800nm). Absorbance is not as simple as scattering, but in general molar extinction coefficients for 
@@ -181,7 +165,7 @@
 		pick up on vascular activity; that is, it must be absorbed or scattered just enough so that we can detect a change when blood 
 		flow is occurring.
 	</p>
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		Deoxygenated and oxygenated hemoglobin absorb some wavelengths light equally (red-NIR), but some wavelengths differently, 
 		and this contrast allows us to collect absorbance data. Infrared light (850-1000nm) is more absorbed by oxygenated hemoglobin, 
 		while deoxygenated hemoglobin has stronger absorption of red light (650–750nm). In commercial devices, the difference between 
@@ -198,13 +182,13 @@
 	</h2>
 	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
-    <p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		Challenges in producing an effective & accurate pulsometer relate to understanding the 
 		interaction of light with human skin tissue, small signals with a large amount of background noise, 
 		user interaction with the equipment. 
 	</p>
 		
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		The focus point for our device is the finger, yet even the composition of the finger is very complex 
 		and tissue properties vary widely from person to person. In our device, light must travel through every skin layer 
 		(epidermis, dermis, and hypodermis), then through muscle, fascia, nerve tissue, and other connective tissue. Our device
@@ -216,7 +200,7 @@
 		enough to not be affected by user movement, but not so tight that it cuts off blood flow.
 	</p>
 		
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		A challenge we faced in CBE 3300A when creating a rudimentary pulsometer is making a small signal amplified and 
 		removing background signal and noise. The flushing of the skin that we are trying to detect is very minor, and creating
 		a device to measure these slight changes could be likened to finding a needle in a haystack. There are many sources of 
@@ -234,11 +218,11 @@
 	</h2>
 	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		Most current circuit design shown below:
 	</p>
 	  
-    <p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 			This circuit is made up of four components. Going left to right, the first component is the finger cuff, 
 		this is where the patient interacts with the device. The finger cuff will be in the shape of a finger clip, with the 
 		IR LED and the photodiode positioned on opposite sides of the finger. The photodiode converts light into electrical 
@@ -251,7 +235,7 @@
 		The capacitor in this stage blocks the DC signal that we added in the previous stage, amplifying only the AC signal that we care about.
 	</p>
 		
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		The goal of this whole process is to isolate the signal we care about (absorbance from oxygenated hemoglobin)
 		and amplify it while removing background signal / noise. In this circuit there is already signal processing with 
 		multiple built-in filters, but there is more signal processing that has to happen in arduino. In order to remove 
@@ -272,11 +256,11 @@
 	</h2>
 	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		The GANTT chart has our projected timeline of the project based on the milestones presented.
 	</p>
 	  
-    <div class="ratio ratio-16x9" style="padding: 0.5rem">
+    <div class="ratio ratio-16x9" style="padding: 0.5rem; padding-bottom: 0.5rem">
       <iframe
         src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQnVuBDbJ8Ixsd71iDGYwxxhoGw3gpQd2K_VOAbr6QpohzsvL9PAMZ1Zct25yvzZSLp4ARQXlTTmTS2/pubhtml?gid=0&single=true&widget=true&headers=false"
         style="border:0;"
@@ -285,11 +269,11 @@
       ></iframe>
     </div>
 
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		The deliverables are very direct. There will be six deliverables throughout the project:
 	</p>
 	  
-	<ol style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+	<ol style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif; padding-left: 2rem;">
   		<li>Preliminary Design Report and Presentation</li>
  		<li>Initial Project Design Presentation</li>
   		<li>Initial Prototype of Product</li>
@@ -307,7 +291,7 @@
 	</h2>
 	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
-    <p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		The global market for wearable healthcare devices is projected to increase by $75.98 billion 
 		by 2030, representing a 67.76% increase over its 2025 value. Over this forecast period, the 
 		market is expected to grow at a compound annual growth rate (CAGR) of 10.9%. This shows the 
@@ -317,20 +301,20 @@
 		For the SWOT analysis, we have identified the following:
 	</p>
 
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		Strength: Our product only has one feature and so our focus is to have the pulse readings more accurate 
 		than other products. 
 	</p>
 
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		Weakness: Since we are using an arduino, the product will be more clunky to wear. 
 	</p>
 
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		Opportunity: general health awareness amongst people is rising, making it more likely our product will sell.
 	</p>
 
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		Threat: Most pulsometers on the market also function as an oximeter, making our product have less features than 
 		competitors.
 	</p>
@@ -343,7 +327,7 @@
 	</h2>
 	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
-    <ul style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+    <ul style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 	  <li>
 	    Circuit components
 	    <ul>
@@ -377,7 +361,7 @@
 	</h2>
 	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
-    <p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		The goal of this project is to create a commercially viable pulseometer, but in 
 		order to do this faithfully we would need to include blood oximetry measurements, 
 		as previously mentioned. In order to do this we would need a second LED of a lower 
@@ -387,7 +371,7 @@
 		to products like a fitbit or apple watch. 
 	</p>
 
-	<p style="font-size: 1.5rem; font-family: Georgia, 'Times New Roman', serif;">
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
 		Another goal would be to improve the user experience. The circuit described above will be bulky, 
 		and therefore difficult to take on the go. If we could miniaturize this circuit on a printed circuit 
 		board, and use a much smaller microcontroller, then we could embed the device entirely onto the finger 
