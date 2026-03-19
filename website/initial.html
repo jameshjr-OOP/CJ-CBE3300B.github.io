@@ -52,32 +52,193 @@
   <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
   <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      Type Intro Here
+      From the initial discussion of what our product would be, this is everything we have done, the alterations, and what we are considering for Mark II.
+	  Below is a list of all of the progress that has been made since the initial design presentation. 
   </p>
+
+  <ol style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif; padding-left: 2rem;">
+  		<li>Convert design from a box to a clip</li>
+		<li>Design finger flip to be more erginomic</li>
+		<li>3D print design of the finger clip</li>
+ 		<li>Translating code from Arduino IDE to Python</li>
+  		<li>Make the signal stronger</li>
+		<li>Add a filter to the data</li>
+		<li>Add peak detection</li>
+		<li>Calculate BPM</li>
+	</ol>
   </section>
 
-	<!-- 3D design -->
+	<!-- Mark I Design -->
   <section id="design" class="container py-3">
   <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
-    Design
+    Mark I Design
   </h2>
   <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
   <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      Add imgs here
+      When we first started, we created the housing of the LED and sensor to be a finger box. However, we want it to be a clip to fit the traditional design. Additionally,
+	  a clip is more optimal because it doesn't force the user to sit completely still in order for our product to work. The first image is the finger box design and the second
+	  is the most up to date design created.
   </p>
+
+  <div style="text-align: center; margin: 2rem 0;">
+		<img src="img/finger box design.png" alt="Circuit Diagram"
+			style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+	</div>
+	  
+  <div style="text-align: center; margin: 2rem 0;">
+		<img src="img/mark I finger clip design.png" alt="Circuit Diagram"
+			style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+	</div>
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+      The finger box initially was printed twice and then tapped together to make it a box. The second design is superior compared to the inital finger box.
+		The finger clip is fitted for the shape of a finger and clips on an axel. The circle indent in the back is for a spring so that the resting position of the 
+		clip is closed. Additionally, the whole for the LEDs are circular rather than square (so it fits better) and there is a hole in the back of the clip
+		so the wiring is more clean and tight in the finger clip.
+  </p>  
   </section>
 
-	<!-- Introduction -->
+	<!-- Mark I Code -->
   <section id="code" class="container py-3">
   <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
-    Code
+    Mark I Code
   </h2>
   <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
   <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      Insert code
+      There was four main milestones completed for the code of our product. The first one was making the code from Arduino IDE into Python language. The purpose behind doing
+	  this is there are a lot of pythong packages with the purpose of filtering data and peak detection. The second milestone was adding a filter. This was so the wave was smoother
+	  and to remove any small noise. We applied the Savitzky–Golay filter. The way it works is that for a set amount of data points, it created a polynomial that best fits the curve that the points
+	  make. From there the filter applies the polynomial to smooth the data. The third milestone was creating peak detection. We applied a peak detection package in python and edited the 
+	  parameters so that it fits how a heart beat behaves. The purpose is to make sure we are identifying the right peaks and not smaller peak made from noise. The forth milestone was utilizing the
+	  peak detection to calculate the BPM.
   </p>
+
+	  <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+      Attached below is the python code we are running currently. At the bottom of the page you can access the documents of the code that was in the Ardunio IDE before converting
+		  and the code in the Ardunio IDE currently so we can code in python.
+  </p>
+
+	<pre><code>
+# ============================================================
+# 1) Imports
+# ============================================================
+from pyfirmata2 import Arduino
+from scipy import signal
+import numpy as np
+import matplotlib.pyplot as plt
+from collections import deque
+import time
+
+# ============================================================
+# 2) Arduino Setup
+# ============================================================
+PORT = "COM3"        # sets up which port it reads from
+ANALOG_PIN = 0       # A0
+WINDOW = 200         # number of samples shown
+
+board = Arduino(PORT)
+board.samplingOn()
+
+ms = 20     #ms between samples
+board.setSamplingInterval(ms) #paces how much data gets sent in and graphed
+
+data = deque([0.5]*WINDOW, maxlen=WINDOW) #value determines the starting values on the y-axis
+
+def callback(value):
+    if value is not None:
+
+        inv_value = (-1)*value + 1
+
+        data.append(inv_value) 
+        # print(inv_value)        
+
+board.analog[ANALOG_PIN].register_callback(callback)
+board.analog[ANALOG_PIN].enable_reporting()
+
+# ============================================================
+# 3) Plot Setup
+# ============================================================
+plt.ion()
+fig, ax = plt.subplots()
+
+line, = ax.plot(range(WINDOW), list(data))
+peaks_plot = ax.scatter([], [], marker='.')
+bpm_text = ax.text(0.02, 0.95, "", transform=ax.transAxes)
+
+ax.set_xlim(0, WINDOW-1)
+ax.set_title("Pulseometer")
+ax.set_xlabel("Samples")
+ax.set_ylabel("Signal")
+
+print("Reading A0...")
+
+# ============================================================
+# 4) Peak Detection
+# ============================================================
+from scipy.signal import find_peaks
+
+def detect_peaks(y_smooth):
+    peaks, _ = find_peaks(
+        y_smooth,
+        distance=25,      # minimum spacing between peaks
+        prominence=0.003  # how much a peak must stand out
+    )
+    return peaks
+
+# ============================================================
+# 5) BPM Monitor
+# ============================================================
+FS = 1000 / ms
+
+def calculate_bpm(peaks, fs):
+    if len(peaks) < 2:
+        return None
+
+    peak_intervals = np.diff(peaks)      # difference in samples
+    avg_interval = np.mean(peak_intervals)
+
+    bpm = 60 / (avg_interval / fs)
+    return bpm
+
+# ============================================================
+# 6) Live Plot Loop
+# ============================================================
+while True:
+    y = np.array(data)
+
+    y_smooth = signal.savgol_filter(y, window_length=11, polyorder=3, mode="nearest")
+    line.set_ydata(y_smooth)
+
+    #peak detection plotting
+    peaks = detect_peaks(y_smooth)
+    if len(peaks) > 0:
+        peaks_plot.set_offsets(np.c_[peaks, y_smooth[peaks]])
+    else:
+        peaks_plot.set_offsets(np.empty((0, 2)))
+
+    print(len(peaks))
+
+    #bpm monitoring plotting
+    bpm = calculate_bpm(peaks, FS)
+    if bpm is not None:
+        bpm_text.set_text(f"BPM: {bpm:.1f}")
+    else:
+        bpm_text.set_text("BPM: --")
+
+    ymin = min(y_smooth)
+    ymax = max(y_smooth)
+    buffer = 0.15
+    yrange = (ymax - ymin) if ymax != ymin else 0.1
+    ax.set_ylim(ymin - buffer * yrange, ymax + buffer * yrange)
+
+    fig.canvas.draw()
+    fig.canvas.flush_events()
+
+    time.sleep(0.05)
+	</code></pre>
+	  
   </section>
 
   <!-- References -->
