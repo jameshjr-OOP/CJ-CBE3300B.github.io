@@ -36,10 +36,18 @@
 	    Summary
 	  </a>
 		<a href="#3dprint" class="btn m-2" style="color:white; border:1px solid white;">
-	    Design
+	    IDP Design
 	  </a>
 		<a href="#code" class="btn m-2" style="color:white; border:1px solid white;">
-	    Code
+	    IDP Code
+	  </a>
+		</a>
+		<a href="#circuitdesign" class="btn m-2" style="color:white; border:1px solid white;">
+	    Circuit
+	  </a>
+		</a>
+		<a href="#methodology" class="btn m-2" style="color:white; border:1px solid white;">
+	    Methodology
 	  </a>
 	</nav>
   </header>
@@ -117,7 +125,7 @@
 
 	  <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
       Attached below is the python code we are running currently. At the bottom of the page you can access the documents of the code that was in the Ardunio IDE before converting
-		  and the code in the Ardunio IDE currently so we can code in python.
+	  and the code in the Ardunio IDE currently so we can code in python.
   </p>
 
 	<pre><code>
@@ -241,6 +249,167 @@ while True:
 	  
   </section>
 
+<!-- Circuit Design & Signal Processing -->
+  <section id="circuitdesign" class="container py-3">
+    <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
+		Circuit Design & Signal Processing
+	</h2>
+	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Most current circuit design shown below:
+	</p>
+
+	<div style="text-align: center; margin: 2rem 0;">
+		<img src="img/circuit_design.png" alt="Circuit Diagram"
+			style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+	</div>
+		  
+    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+			This circuit is made up of four components. Going left to right, the first component is the finger cuff, 
+		this is where the patient interacts with the device. The finger cuff will be in the shape of a finger clip, with the 
+		IR LED and the photodiode positioned on opposite sides of the finger. The photodiode converts light into electrical 
+		current with a high sensitivity and linearity, which is helpful for the small signals we are working with. The second 
+		component is the transimpedance amplifier (TIA). The current from the photodiode flows to the negative terminal of the 
+		op-amp and through the gain-setting resistor. This creates a voltage at the output of the op-amp that is proportional 
+		to the input current - the capacitor helps reduce noise. Next is a simple highpass filter; we are removing the DC baseline 
+		signal that comes from the natural absorbance and scattering from the tissue. The last component is a non-inverting gain op-amp. 
+		This amplifies the signal by a factor of R2/R1 (the ratio of the resistor in the feedback loop to the resistor connected to ground). 
+		The capacitor in this stage blocks the DC signal that we added in the previous stage, amplifying only the AC signal that we care about.
+	</p>
+		
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		The goal of this whole process is to isolate the signal we care about (absorbance from oxygenated hemoglobin)
+		and amplify it while removing background signal / noise. In this circuit there is already signal processing with 
+		multiple built-in filters, but there is more signal processing that has to happen in arduino. In order to remove 
+		background noise from the environment, we can use background subtracted signal. We blink the IR LED on and off (50-500Hz) 
+		and measure the signal in the on versus off state. Subtracting these two values will give us a reading that is roughly 
+		independent of the surrounding conditions - like ambient lighting or different placements of the device on the finger. 
+		Furthermore, in order to give a heart rate in bpm, it is necessary to real-time peak detection on the signal. This peak 
+		detection becomes very hard with noisy signal, but assuming we can tune our filter appropriately, this peak detection can 
+		be done with a simple cut off. If the signal is higher than some predetermined baseline and the signal goes from increasing 
+		to decreasing (instantaneous derivative = 0) then we can mark a peak. Time average between peaks gives the users real-time bpm. 
+	</p>
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		During the inital report and now, we have changed components to help with making the signal stronger. The main difference is we have changed the resistance on the LED to be
+		smaller so that the LED strength is larger. This was done because we kept on getting a smaller signal compared to the noise. So rather than reducing noise, we amplified the
+		signal to get through more. Additionally there will be 2 LEDs rather than one. When we lowered the resistance, the LED started getting really hot which we saw as a potential
+		hazard for user. So by adding a second LED and increasing the resitance a little bit, we get a similar result that we are looking for.
+	</p>
+  </section>
+	
+<!-- Methodology -->
+  <section id="methodology" class="container py-3">
+    <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
+		Methodology & Theory
+	</h2>
+	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+	  
+    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Our pulseometer, like commercial products, is based on photoplethysmography (PPG). PPG is an optical 
+		technique based on the Beer-Lambert law, and it can be used to measure physiologic information about a 
+		patient. When a patient’s skin is illuminated with specific wavelengths of light, the absorbance fluctuates 
+		in accordance with the flow of blood through that area of tissue. If one can measure this real-time absorbance, 
+		it is possible to extract information about not only heart rate, but blood oxygen saturation, respiratory rate, 
+		and even sleep quality
+	</p>
+
+	<div style="display:flex; justify-content:center; align-items:flex-start; gap:2rem; margin:2rem 0;">
+  		<img src="img/scatter_ill_img.png" alt="Scatter Illustration"
+      	 	style="width:35%; padding:1rem; border:3px solid #011F5B; background-color:white;">
+
+  		<img src="img/pen_depth_img.png" alt="PPG Depth Diagram"
+       		style="width:30%; padding:1rem; border:3px solid #011F5B; background-color:white;">
+	</div>
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Our project will use transmittance PPG, where the light source is positioned opposite 
+		to the light collecting device, so the signal must travel through the appendage (fingertip) 
+		as demonstrated in the figure. In order to pick up small absorbance changes in pulsatile artery blood, 
+		we need to understand the optical properties of tissue and blood. Considering we are using transmittance 
+		PPG, light must be able to travel through the fingertip without getting completely absorbed or scattered out. 
+		Light scattering in tissue can be modeled with a power law relationship:
+	</p>
+
+	<div style="text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 1.5rem; margin: 1.5rem 0;">
+  		μ<sub>s</sub><sup>′</sup> ∝ λ<sup>−b</sup>
+	</div>
+
+	<ul style="list-style: none; font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+	  	<li>μ<sub>s</sub><sup>′</sup> = scattering coefficient [1/length]</li>
+		<li>λ = wavelength of light</li>
+		<li>b =  scattering “strength” [dimensionless]</li>
+	</ul>
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Depending on the tissue, b could be anywhere between 0.7-1.5. It is clear that as wavelength decreases, 
+		scattering increases, and we see a similar trend for absorption. Absorption follows the Beer-Lambert law:
+	</p>
+
+	<div style="text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 1.5rem; margin: 1.5rem 0;">
+  		A = &epsilon;Lc
+	</div>
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Which can be re-expressed as:
+	</p>
+	<div style="text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 1.5rem; margin: 1.5rem 0;">
+  		<span style="display:inline-block;">
+    		<span style="font-style: italic;">I</span>/<span style="font-style: italic;">I</span><sub>0</sub>
+    			&nbsp;=&nbsp;
+    			10<sup>−A</sup>
+    			&nbsp;=&nbsp;
+    			10<sup>−εLc</sup>
+    			&nbsp;=&nbsp;
+   				e<sup>−μ<sub>a</sub>A</sup>
+  		</span>
+	</div>
+
+	<ul style="list-style: none; font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+	  	<li>A = Absorbance [dimensionless]</li>
+		<li>ε = molar extinction coefficient [1 / concentration*length]</li>
+		<li>L = path length</li>
+		<li>c = concentration</li>
+		<li>I<sub>0</sub> = Indecent intensity [power/area]</li>
+		<li>I = transmitted intensity [power/area]</li>
+		<li>&mu;<sub>a</sub> = absorption coefficient [1/length]</li>
+	</ul>
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Re-arranging the expressions above we see that &mu;<sub>a</sub> ∝ c&epsilon;. However, in tissue samples this becomes 
+		slightly more complicated, as the Beer-Lambert law assumes the presence of only one absorber. In skin and tissue there 
+		are many absorbers, so we can express this with a sum:
+	</p>
+
+	<div style="text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 1.5rem; margin: 1.5rem 0;">
+  		μ<sub>a</sub> ∝ Σ<sub>i</sub> c<sub>i</sub> ε<sub>i</sub>
+	</div>
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Each of these absorbers has slightly different molar extinction coefficients (melanin and other chromophores
+		in the skin exhibit strong light absorption in the 200-500nm range, whereas water and lipids become more 
+		significant past 800nm). Absorbance is not as simple as scattering, but in general molar extinction coefficients for 
+		relevant organic molecules in the skin become stronger at lower wavelengths. Therefore if the goal is for light to travel 
+		all the way through tissue, it is more helpful to use a higher wavelength of light. It must still be a wavelength that can 
+		pick up on vascular activity; that is, it must be absorbed or scattered just enough so that we can detect a change when blood 
+		flow is occurring.
+	</p>
+
+	<div style="text-align: center; margin: 2rem 0;">
+		<img src="img/absorb_co_img.png" alt="Absorption Coefficient Graph"
+			style="max-width: 30%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+	</div>
+	  
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Deoxygenated and oxygenated hemoglobin absorb some wavelengths light equally (red-NIR), but some wavelengths differently, 
+		and this contrast allows us to collect absorbance data. Infrared light (850-1000nm) is more absorbed by oxygenated hemoglobin, 
+		while deoxygenated hemoglobin has stronger absorption of red light (650–750nm). In commercial devices, the difference between 
+		these absorbance ranges allows one to measure blood oxygen saturation. However, for the purpose of this device we will therefore
+		be using infrared light, as it will have enough penetration depth into the tissue to be detected with transmittance PPG while 
+		also being sufficiently scattered / absorbed by oxygenated blood for us to detect it.  
+	</p>  
+  </section>
+	
   <!-- References -->
   <section id="ref" class="container py-3">
     <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
