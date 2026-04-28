@@ -68,7 +68,10 @@
   <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
   <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-
+      The initial circuit is the same one shown in the preliminary design report. It is made up of an IR LED and photodiode in the finger cuff, a transimpedance amplifier
+	  (TIA) to convert the photodiode current into a voltage while reducing noise, a high-pass filter with a cutoff frequency of 0.57 Hz to remove the DC baseline, and a 
+	  non-inverting amplifier with a gain of 10 to amplify the AC signal we care about. The video below is the output we got from this initial circuit on the Arduino serial 
+	  plotter, which shows that we are picking up something that resembles a pulse waveform but with a fairly low signal range.
   </p>
 	  
   <div style="text-align: center; margin: 2rem 0;">
@@ -77,6 +80,14 @@
     Your browser does not support the video tag.
   </video>
 	</div>
+
+  <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+      After looking at the output of the initial circuit, we identified that the signal is far too low - the entire pulse waveform is contained within roughly 4 digital counts
+	  on the Arduino's 10-bit ADC. The signal-to-noise ratio is decent, but the signal itself is so small that small changes in the environment or finger placement can easily 
+	  drown it out. To address this, the adjusted circuit increases the non-inverting gain by raising the feedback resistor and adding a second op-amp stage. We are also 
+	  considering using a brighter LED (or a second LED in parallel) so that more light reaches the photodiode, and implementing background subtraction by blinking the IR LED 
+	  on and off and subtracting the off-state reading from the on-state reading to remove ambient light contributions.
+  </p>
 	  
   </section>
 
@@ -88,7 +99,22 @@
   <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
   <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+      The current "finger box" design is functional but has a few issues that we want to address in the next iteration. The photodiode and LED are not flush with the skin, 
+	  which means there is a small air gap between the components and the finger that allows ambient light to reach the photodiode and reduces the consistency of the signal. 
+	  The box is also not particularly ergonomic - it requires the user to hold their finger flat against an opening rather than letting the device conform to the finger.
+  </p>
 
+  <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+      The mechanical improvements we plan on making are to sink the photodiode into the casing for more stability, design the casing so that the photodiode and LED are flush 
+	  with the skin, and overall make the design more ergonomic. The most significant change is moving from the box design to a finger clip design, which is the standard form 
+	  factor for commercial pulse oximeters.
+  </p>
+
+  <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+      We also considered several options for ambient light isolation. The current design relies on the box itself blocking light, but this isn't fully effective. We considered 
+	  a mesh covering, a fully enclosed design, an optical baffle, and a clip design. Each has tradeoffs between user friendliness and light isolation - the enclosed and clip 
+	  designs offer the best ambient light isolation, while the mesh and optical baffle designs are more accommodating of different finger sizes. We are moving forward with 
+	  the clip design because it gives us the best balance of light isolation, ergonomics, and consistency with commercial products.
   </p>
   </section>
 
@@ -100,7 +126,18 @@
   <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
   <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+      To better understand where our product would sit in the market, we looked at competitors that offer heart rate monitoring as part of their product. The smartwatch 
+	  category (Apple, Samsung, Fitbit) typically offers heart rate, blood oxygen, sleep tracking, and other fitness features at a price range of roughly $65 to $799. The 
+	  dedicated pulse oximeter category (Masimo, Medtronic, Wellue) offers heart rate and blood oxygen at a price range of roughly $20 to $700. Across all six competitors 
+	  we looked at, the average price range is approximately $148 to $522.
+  </p>
 
+  <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+      Looking at the bill of materials for our own product, the component cost is significantly lower than what is on the market. The IR LED is roughly $0.90, the 
+	  photodiode is $1.40, the resistors total $0.25, the capacitors total $0.21, the op-amps total $0.64, the microcontroller is between $5 and $15 depending on whether 
+	  we use the Arduino Uno or a smaller microcontroller, and the mini LCD is roughly $5. The total component cost is between $13.40 and $23.40. Even after accounting 
+	  for the 3D printed housing, assembly, and a reasonable markup, our product could be priced well below the competitor average while still maintaining margin. The 
+	  tradeoff is that our product currently only measures heart rate, not blood oxygen, and is bulkier than a smartwatch.
   </p>
   </section>
 
