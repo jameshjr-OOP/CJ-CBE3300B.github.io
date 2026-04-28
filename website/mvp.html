@@ -65,9 +65,18 @@
   </p>
 
   <ol style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif; padding-left: 2rem;">
-  		<li>Minor alteration to the fingerclip design</li>
-
+  		<li>Designed and built a housing case to hold the Arduino, circuitry, and LCD screen as one unit</li>
+		<li>Made the device fully standalone - no laptop required to read BPM</li>
+		<li>Removed the Savitzky-Golay filter from the code, as it was smearing out heartbeat peaks at the new sample rate</li>
+		<li>Lowered the sampling rate from 50 Hz to 20 Hz for a cleaner signal</li>
+		<li>Resized the analysis window from 200 samples to 80 samples to maintain a 4-second window</li>
+		<li>Added a separate PROM_LOOKBACK parameter to prevent neighboring heartbeats from corrupting the prominence calculation</li>
+		<li>Raised the prominence threshold from 0.003 to 0.005 to better separate real peaks from noise</li>
+		<li>Switched the BPM calculation from the mean of peak intervals to the median for outlier rejection</li>
+		<li>Added diagnostic Serial output to enable real-time tuning of detection parameters</li>
+		<li>Identified that nail-side-down finger orientation gives dramatically better signal quality</li>
 	</ol>
+	  
   </section>
 
 	<!-- MVP Design -->
@@ -78,11 +87,10 @@
   <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
   <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      An issue that arose during the Mark I prototype was the sensor was showing noise still. However this wasn't from the circuit filtering not being adequate,
-	  it was mechanical because when adjusted correctly the signal would show. So we made the photosensor be more recessed into the clip. We also made the LED poke more into the finger casing
-	  so more IR waves enter the casing. Finally, we also decided to remove the second LED.
-
-	  For the future, we are working on making a housing case to store all of the circuitry for both the pulseometer and the LCD screen. 
+      Between the intermediate prototype and the MVP, the finger clip design itself was not changed - the clip from Mark II proved adequate, so the focus shifted to building a 
+	  proper housing for everything else. The main goal of this stage was to design a case that fit the MVP perfectly, holding the Arduino, the circuitry, and the LCD screen 
+	  together as one unit. With the casing in place, the device is now fully standalone: the user no longer needs a laptop to read the BPM, since the LCD screen mounted in 
+	  the case displays it directly.
   </p>
 	  
   <div style="text-align: center; margin: 2rem 0;">
