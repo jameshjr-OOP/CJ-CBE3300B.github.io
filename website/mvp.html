@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,68 +27,351 @@
 	        CROI | Pulseometer Technology
 	      </h1>
 	      <h2 style="margin:0.3rem 0 0; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
-	        Preliminary Design Report
+	        Inital Design Prototype
 	      </h2>
 	    </div>
   	</div>
 
 	<nav style="position: sticky; top: 0; width: 100%; background-color:#011F5B; color:white; text-align: center; z-index: 1000; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
-	  <a href="#intro" class="btn m-2" style="color:white; border:1px solid white;">
-	    Introduction
+	  <a href="#summary" class="btn m-2" style="color:white; border:1px solid white;">
+	    Summary
 	  </a>
-	  <a href="#methodology" class="btn m-2" style="color:white; border:1px solid white;">
+		<a href="#3dprint" class="btn m-2" style="color:white; border:1px solid white;">
+	    Mark II Design
+	  </a>
+		<a href="#code" class="btn m-2" style="color:white; border:1px solid white;">
+	    Mark II Code
+	  </a>
+		</a>
+		<a href="#circuitdesign" class="btn m-2" style="color:white; border:1px solid white;">
+	    Circuit
+	  </a>
+		</a>
+		<a href="#methodology" class="btn m-2" style="color:white; border:1px solid white;">
 	    Methodology
-	  </a>
-	  <a href="#constraints" class="btn m-2" style="color:white; border:1px solid white;">
-	    Design Constraints
-	  </a>
-	  <a href="#circuitdesign" class="btn m-2" style="color:white; border:1px solid white;">
-	    Circuit Design
-	  </a>
-	  <a href="#timeline" class="btn m-2" style="color:white; border:1px solid white;">
-	    Timeline
-	  </a>
-	  <a href="#economy" class="btn m-2" style="color:white; border:1px solid white;">
-	    Economic Considerations
-	  </a>
-	  <a href="#matlist" class="btn m-2" style="color:white; border:1px solid white;">
-	    Materials
-	  </a>
-	  <a href="#future" class="btn m-2" style="color:white; border:1px solid white;">
-	    Future Considerations
 	  </a>
 	</nav>
   </header>
 
   <!-- Introduction -->
-  <section id="intro" class="container py-3">
+  <section id="summary" class="container py-3">
   <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
-    Introduction
+    Summary
   </h2>
   <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
   <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-    A pulseometer is a wearable device to measure a user's real-time heart rate. 
-	  Pulseometers are commonplace for use in both medical settings and at-home patient care. 
-	  Commercial pulseometers measure heart rate (bpm) and peripheral blood oxygen saturation (SpO2). 
-	  These measurements are useful for everyday health monitoring, but are particularly 
-	  important for patients with conditions affecting the lungs or heart - like COPD, COVID-19, 
-	  or heart disease.
+      From the Mark I design of the product, this is everything we have done, the alterations, and what we are considering for Mark III of the Minimal Viable Product.
+	  Below is a list of all of the progress that has been made since the initial design presentation. 
   </p>
 
+  <ol style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif; padding-left: 2rem;">
+  		<li>Minor alteration to the fingerclip design</li>
+	  	<li>Soildered the pulseometer circuit</li>
+	 	<li>Converted code all into Arduino</li>
+	  	<li>Get pulseometer to work w/o laptop</li>
+	  	<li>Add LCD sceen to display BPM</li>
+	</ol>
+  </section>
+
+	<!-- Mark II Design -->
+  <section id="3dprint" class="container py-3">
+  <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
+    Mark II Design
+  </h2>
+  <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+	  
   <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-    This Preliminary design report will give the underlying theory for this device and outline 
-	  our plan for the design of this device, with the goal that it could be marketed as a 
-	  commercially viable finger clip pulseometer. It will incorporate real-time heart rate 
-	  monitoring with a user-friendly design and visual display. Using the principles of photoplethysmography, 
-	  we will be able to detect the subtle flushing that occurs when blood flows through capillary arteries near 
-	  the surface of the skin. Then, using various signal processing methods, we will turn this information into 
-	  a heart rate. This device will not measure oxygen saturation as that is outside the scope of this course, 
-	  but could be considered in future iterations of this project. 
+      An issue that arrose during the Mark I prototype was the sensor was showing noise still. However this wasn't from the circuit filtering not being adaquate,
+	  it was mechanical because when adjusted correctly the signal would show. So we made the photosensor be more recessed into the clip. We also made the LED poke more into the finger casing
+	  so more IR waves enter the casing. Finally, we also decided to remove the second LED.
+
+	  For the future, we are working on making a housing case to store all of the circuitry for both the pulseometer and the LCD screen. 
   </p>
-</section>
-  
-  <!-- Methodology & Theory -->
+	  
+  <div style="text-align: center; margin: 2rem 0;">
+		<img src="img/mark II fingerclip.png" alt="Circuit Diagram"
+			style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+	</div>
+	  <div style="text-align: center; margin: 2rem 0;">
+		<img src="img/case with LCD screen slot.png" alt="Circuit Diagram"
+			style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+	</div>
+	  
+  </section>
+
+	<!-- Mark II Code -->
+  <section id="code" class="container py-3">
+  <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
+    Mark II Code
+  </h2>
+  <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+	  
+  <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+    From Mark I, we convered all the code back into the arduino and have no python coding. There was two reasons for this. The first was in order to have the pulseometer be stand alone
+	  and not rely being connected to a laptop, all of the code had to run on the arduino. The second reason is the code that was in the ardunio to code in python is mutually exclusive to the
+	  code nessecary to having the LCD screen run. So the best choice was to convert it all. Right now there is an issue with the code where the filtering is different from the python code.
+	  The python code used a Savitzky-Golay filter, but the arduino code right now uses a "moving average" to filter. The following is the new code that is in the arduino currently:
+  </p>
+
+  <pre><code>
+    #include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+// ============================================================
+// Custom characters
+// ============================================================
+byte skull[8] = {
+  0b01110,
+  0b10101,
+  0b11011,
+  0b01110,
+  0b01110,
+  0b00000,
+  0b01110,
+  0b00000
+};
+
+byte heart[8] = {
+  0b00000,
+  0b01010,
+  0b11111,
+  0b11111,
+  0b01110,
+  0b00100,
+  0b00000,
+  0b00000
+};
+
+// ============================================================
+// 1) Settings
+// ============================================================
+const int PULSE_PIN = A0;
+const int SAMPLE_INTERVAL = 20;
+const int WINDOW = 200;
+
+// ============================================================
+// 2) Smoothing
+// ============================================================
+const int SMOOTH_WINDOW = 11;
+float smoothBuffer[SMOOTH_WINDOW];
+int smoothIndex = 0;
+
+float smoothSample(float newVal) {
+  smoothBuffer[smoothIndex] = newVal;
+  smoothIndex = (smoothIndex + 1) % SMOOTH_WINDOW;
+  float sum = 0;
+  for (int i = 0; i < SMOOTH_WINDOW; i++) sum += smoothBuffer[i];
+  return sum / SMOOTH_WINDOW;
+}
+
+// ============================================================
+// 3) Circular buffer
+// ============================================================
+float samples[WINDOW];
+int sampleIndex = 0;
+int totalSamples = 0;
+
+// ============================================================
+// 4) Peak Detection
+// ============================================================
+const int MIN_DISTANCE = 25;
+const float PROMINENCE = 0.003;
+
+int peakIndices[20];
+int peakCount = 0;
+
+void detectPeaks() {
+  peakCount = 0;
+  int lastPeak = -MIN_DISTANCE;
+
+  for (int i = 1; i < WINDOW - 1; i++) {
+    float prev = samples[(sampleIndex + i - 1) % WINDOW];
+    float curr = samples[(sampleIndex + i) % WINDOW];
+    float next = samples[(sampleIndex + i + 1) % WINDOW];
+
+    if (curr <= prev || curr <= next) continue;
+    if (i - lastPeak < MIN_DISTANCE) continue;
+
+    float leftMin = curr;
+    for (int j = max(0, i - MIN_DISTANCE); j < i; j++)
+      leftMin = min(leftMin, samples[(sampleIndex + j) % WINDOW]);
+
+    float rightMin = curr;
+    for (int j = i + 1; j <= min(WINDOW - 1, i + MIN_DISTANCE); j++)
+      rightMin = min(rightMin, samples[(sampleIndex + j) % WINDOW]);
+
+    float prom = curr - max(leftMin, rightMin);
+    if (prom < PROMINENCE) continue;
+
+    peakIndices[peakCount++] = i;
+    lastPeak = i;
+    if (peakCount >= 20) break;
+  }
+}
+
+// ============================================================
+// 5) BPM Calculation
+// ============================================================
+float calculateBPM() {
+  if (peakCount < 2) return -1;
+
+  float totalInterval = 0;
+  for (int i = 1; i < peakCount; i++)
+    totalInterval += peakIndices[i] - peakIndices[i - 1];
+
+  float avgInterval = totalInterval / (peakCount - 1);
+  float fs = 1000.0 / SAMPLE_INTERVAL;
+  return 60.0 / (avgInterval / fs);
+}
+
+// ============================================================
+// 6) Setup
+// ============================================================
+void setup() {
+  Serial.begin(9600);
+  lcd.begin(16, 2);
+  lcd.createChar(0, skull);
+  lcd.createChar(1, heart);
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Pulseometer ");
+  lcd.write(byte(1));  // heart on startup
+  lcd.setCursor(0, 1);
+  lcd.print("BPM: --");
+
+  for (int i = 0; i < WINDOW; i++) samples[i] = 0.5;
+  for (int i = 0; i < SMOOTH_WINDOW; i++) smoothBuffer[i] = 0.5;
+}
+
+// ============================================================
+// 7) Loop
+// ============================================================
+unsigned long lastSample = 0;
+unsigned long lastBPMUpdate = 0;
+unsigned long zeroBPMStart = 0;
+
+void loop() {
+  if (millis() - lastSample >= SAMPLE_INTERVAL) {
+    lastSample = millis();
+
+    int raw = analogRead(PULSE_PIN);
+    float inv = 1.0 - (raw / 1023.0);
+    float smoothed = smoothSample(inv);
+
+    samples[sampleIndex] = smoothed;
+    sampleIndex = (sampleIndex + 1) % WINDOW;
+    if (totalSamples < WINDOW) totalSamples++;
+
+    Serial.println(smoothed);
+  }
+
+  if (millis() - lastBPMUpdate >= 2000 && totalSamples >= WINDOW) {
+    lastBPMUpdate = millis();
+
+    detectPeaks();
+    float bpm = calculateBPM();
+
+    if (bpm > 0) {
+      // valid BPM - reset timer, show heart
+      zeroBPMStart = 0;
+
+      lcd.setCursor(0, 0);
+      lcd.print("Pulseometer ");
+      lcd.write(byte(1));  // heart
+      lcd.print("   ");
+
+      lcd.setCursor(0, 1);
+      lcd.print("BPM: ");
+      lcd.print(bpm, 1);
+      lcd.print("   ");
+
+    } else {
+      // no BPM - start timer
+      if (zeroBPMStart == 0) zeroBPMStart = millis();
+
+      if (millis() - zeroBPMStart >= 500) {
+        // 5 seconds with no pulse - show skull
+        lcd.setCursor(0, 0);
+        lcd.print("Pulseometer ");
+        lcd.write(byte(0));  // skull
+        lcd.print("   ");
+
+        lcd.setCursor(0, 1);
+        lcd.print("BPM: ---    ");
+
+      } else {
+        // waiting - keep heart, show --
+        lcd.setCursor(0, 0);
+        lcd.print("Pulseometer ");
+        lcd.write(byte(1));  // heart
+        lcd.print("   ");
+
+        lcd.setCursor(0, 1);
+        lcd.print("BPM: --     ");
+      }
+    }
+  }
+}
+  </code></pre>
+	  
+  </section>
+
+<!-- Circuit Design & Signal Processing -->
+  <section id="circuitdesign" class="container py-3">
+    <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
+		Circuit Design & Signal Processing
+	</h2>
+	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Most current circuit design shown below:
+	</p>
+
+	<div style="text-align: center; margin: 2rem 0;">
+		<img src="img/circuit_design.png" alt="Circuit Diagram"
+			style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+	</div>
+		  
+    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+			This circuit is made up of four components. Going left to right, the first component is the finger cuff, 
+		this is where the patient interacts with the device. The finger cuff will be in the shape of a finger clip, with the 
+		IR LED and the photodiode positioned on opposite sides of the finger. The photodiode converts light into electrical 
+		current with a high sensitivity and linearity, which is helpful for the small signals we are working with. The second 
+		component is the transimpedance amplifier (TIA). The current from the photodiode flows to the negative terminal of the 
+		op-amp and through the gain-setting resistor. This creates a voltage at the output of the op-amp that is proportional 
+		to the input current - the capacitor helps reduce noise. Next is a simple highpass filter; we are removing the DC baseline 
+		signal that comes from the natural absorbance and scattering from the tissue. The last component is a non-inverting gain op-amp. 
+		This amplifies the signal by a factor of R2/R1 (the ratio of the resistor in the feedback loop to the resistor connected to ground). 
+		The capacitor in this stage blocks the DC signal that we added in the previous stage, amplifying only the AC signal that we care about.
+	</p>
+		
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		The goal of this whole process is to isolate the signal we care about (absorbance from oxygenated hemoglobin)
+		and amplify it while removing background signal / noise. In this circuit there is already signal processing with 
+		multiple built-in filters, but there is more signal processing that has to happen in arduino. In order to remove 
+		background noise from the environment, we can use background subtracted signal. We blink the IR LED on and off (50-500Hz) 
+		and measure the signal in the on versus off state. Subtracting these two values will give us a reading that is roughly 
+		independent of the surrounding conditions - like ambient lighting or different placements of the device on the finger. 
+		Furthermore, in order to give a heart rate in bpm, it is necessary to real-time peak detection on the signal. This peak 
+		detection becomes very hard with noisy signal, but assuming we can tune our filter appropriately, this peak detection can 
+		be done with a simple cut off. If the signal is higher than some predetermined baseline and the signal goes from increasing 
+		to decreasing (instantaneous derivative = 0) then we can mark a peak. Time average between peaks gives the users real-time bpm. 
+	</p>
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		From mark I to now, the circuit of the pulseometer has not changed. The only difference is now we have a circuit for the LDC screen. The screen circuitry is shown below.
+	</p>
+
+	<div style="text-align: center; margin: 2rem 0;">
+		<img src="img/LCD_circuit_diagram.png" alt="Circuit Diagram"
+			style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+	</div>
+	  
+  </section>
+	
+<!-- Methodology -->
   <section id="methodology" class="container py-3">
     <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
 		Methodology & Theory
@@ -197,134 +481,77 @@
 		also being sufficiently scattered / absorbed by oxygenated blood for us to detect it.  
 	</p>  
   </section>
-  
-  <!-- Engineering Design Constraints -->
-  <section id="constraints" class="container py-3">
-    <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
-		Engineering Design Constraints
-	</h2>
-	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
-	  
-    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-		Challenges in producing an effective & accurate pulsometer relate to understanding the 
-		interaction of light with human skin tissue, small signals with a large amount of background noise, 
-		user interaction with the equipment. 
-	</p>
-		
-	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-		The focus point for our device is the finger, yet even the composition of the finger is very complex 
-		and tissue properties vary widely from person to person. In our device, light must travel through every skin layer 
-		(epidermis, dermis, and hypodermis), then through muscle, fascia, nerve tissue, and other connective tissue. Our device
-		should be able to function regardless of skin color (as melanin content can change refractive behavior of light), fat content, 
-		or muscle content. While the patient is using the device, it should still be able to function under differing conditions of 
-		fingertip perspiration, slight finger movement, or changing external lighting conditions. We plan to account for these differences 
-		by using wavelengths of light that work regardless of skin absorbers (like melanin) and target the absorption spectra of oxygenated 
-		blood. We will account for friendly user design by using a finger clip that will block out external light sources and will grip tight 
-		enough to not be affected by user movement, but not so tight that it cuts off blood flow.
-	</p>
-		
-	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-		A challenge we faced in CBE 3300A when creating a rudimentary pulsometer is making a small signal amplified and 
-		removing background signal and noise. The flushing of the skin that we are trying to detect is very minor, and creating
-		a device to measure these slight changes could be likened to finding a needle in a haystack. There are many sources of 
-		background signal and noise for PPG, but absorption from other tissues, background light, and user movement were the largest. 
-		However, these factors generally do not change for an individual user while they are using the device, so it tends to result 
-		in a baseline DC signal that we have to filter out. What is important is making sure the signal is able to stand out after we 
-		remove everything else. We plan to deal with this by implementing new circuit design and signal processing techniques. 
-	</p>
-  </section>
-  
-  <!-- Circuit Design & Signal Processing -->
-  <section id="circuitdesign" class="container py-3">
-    <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
-		Circuit Design & Signal Processing
-	</h2>
-	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
-
-	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-		Most current circuit design shown below:
-	</p>
-
-	<div style="text-align: center; margin: 2rem 0;">
-		<img src="img/circuit_design.png" alt="Circuit Diagram"
-			style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
-	</div>
-		  
-    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-			This circuit is made up of four components. Going left to right, the first component is the finger cuff, 
-		this is where the patient interacts with the device. The finger cuff will be in the shape of a finger clip, with the 
-		IR LED and the photodiode positioned on opposite sides of the finger. The photodiode converts light into electrical 
-		current with a high sensitivity and linearity, which is helpful for the small signals we are working with. The second 
-		component is the transimpedance amplifier (TIA). The current from the photodiode flows to the negative terminal of the 
-		op-amp and through the gain-setting resistor. This creates a voltage at the output of the op-amp that is proportional 
-		to the input current - the capacitor helps reduce noise. Next is a simple highpass filter; we are removing the DC baseline 
-		signal that comes from the natural absorbance and scattering from the tissue. The last component is a non-inverting gain op-amp. 
-		This amplifies the signal by a factor of R2/R1 (the ratio of the resistor in the feedback loop to the resistor connected to ground). 
-		The capacitor in this stage blocks the DC signal that we added in the previous stage, amplifying only the AC signal that we care about.
-	</p>
-		
-	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-		The goal of this whole process is to isolate the signal we care about (absorbance from oxygenated hemoglobin)
-		and amplify it while removing background signal / noise. In this circuit there is already signal processing with 
-		multiple built-in filters, but there is more signal processing that has to happen in arduino. In order to remove 
-		background noise from the environment, we can use background subtracted signal. We blink the IR LED on and off (50-500Hz) 
-		and measure the signal in the on versus off state. Subtracting these two values will give us a reading that is roughly 
-		independent of the surrounding conditions - like ambient lighting or different placements of the device on the finger. 
-		Furthermore, in order to give a heart rate in bpm, it is necessary to real-time peak detection on the signal. This peak 
-		detection becomes very hard with noisy signal, but assuming we can tune our filter appropriately, this peak detection can 
-		be done with a simple cut off. If the signal is higher than some predetermined baseline and the signal goes from increasing 
-		to decreasing (instantaneous derivative = 0) then we can mark a peak. Time average between peaks gives the users real-time bpm. 
-	</p>
-  </section>
-    
+	
   <!-- References -->
   <section id="ref" class="container py-3">
     <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
       References
     </h2>
     <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
-
-	<ol style="list-style: none; font-family: Georgia, 'Times New Roman', serif; font-size: 1rem; padding-left: 2.5rem;">
-	  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
-	    Cleveland Clinic. “Pulse Oximetry: Function, Method & Readings.”
-	    Last updated September 23, 2025. Accessed February 2, 2026.
-	    https://my.clevelandclinic.org/health/diagnostics/pulse-oximetry
-	  </li>
-	
-	  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
-	    Jacques, Steven L. “Optical Properties of Biological Tissues: A Review.”
-	    <em>Physics in Medicine & Biology</em> 58, no. 11 (2013): R37–R61.
-	    https://doi.org/10.1088/0031-9155/58/11/R37
-	  </li>
-	
-	  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
-	    Mancini, D. M., L. Bolinger, H. Li, K. Kendrick, B. Chance, and J. R. Wilson.
-	    “Validation of Near-Infrared Spectroscopy in Humans.”
-	    <em>Journal of Applied Physiology</em> 77, no. 6 (1994): 2740–2747.
-	    https://doi.org/10.1152/jappl.1994.77.6.2740
-	  </li>
-	
-	  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
-	    Ryals, S. A., Chang, S., Schutte-Rodin, S., et al.
-	    “Photoplethysmography—New Applications for an Old Technology.”
-	    <em>Journal of Clinical Sleep Medicine</em> 19, no. 1 (2023): 189–195.
-	    https://doi.org/10.5664/jcsm.10300
-	  </li>
-	
-	  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
-	    Scholkmann, Felix, and Martin Wolf.
-	    “General Equation for the Differential Pathlength Factor of the Frontal Human Head.”
-	    <em>Journal of Biomedical Optics</em> 18, no. 10 (2013): 105004.
-	    https://doi.org/10.1117/1.JBO.18.10.105004
-	  </li>
-	
-	  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
-	    MarketsandMarkets.
-	    “Wearable Healthcare Devices Market: Growth, Size, Share, and Trends.”
-	    (2025).
-	    https://www.marketsandmarkets.com/Market-Reports/wearable-medical-device-market-81753973.html
-	  </li>
-	</ol>
+	  
+	  <ol style="list-style: none; font-family: Georgia, 'Times New Roman', serif; font-size: 1rem; padding-left: 2.5rem;">
+		  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		    Cleveland Clinic. “Pulse Oximetry: Function, Method & Readings.”
+		    Last updated September 23, 2025. Accessed February 2, 2026.
+		    https://my.clevelandclinic.org/health/diagnostics/pulse-oximetry
+		  </li>
+		
+		  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		    Jacques, Steven L. “Optical Properties of Biological Tissues: A Review.”
+		    <em>Physics in Medicine & Biology</em> 58, no. 11 (2013): R37–R61.
+		    https://doi.org/10.1088/0031-9155/58/11/R37
+		  </li>
+		
+		  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		    Mancini, D. M., L. Bolinger, H. Li, K. Kendrick, B. Chance, and J. R. Wilson.
+		    “Validation of Near-Infrared Spectroscopy in Humans.”
+		    <em>Journal of Applied Physiology</em> 77, no. 6 (1994): 2740–2747.
+		    https://doi.org/10.1152/jappl.1994.77.6.2740
+		  </li>
+		
+		  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		    Ryals, S. A., Chang, S., Schutte-Rodin, S., et al.
+		    “Photoplethysmography—New Applications for an Old Technology.”
+		    <em>Journal of Clinical Sleep Medicine</em> 19, no. 1 (2023): 189–195.
+		    https://doi.org/10.5664/jcsm.10300
+		  </li>
+		
+		  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		    Scholkmann, Felix, and Martin Wolf.
+		    “General Equation for the Differential Pathlength Factor of the Frontal Human Head.”
+		    <em>Journal of Biomedical Optics</em> 18, no. 10 (2013): 105004.
+		    https://doi.org/10.1117/1.JBO.18.10.105004
+		  </li>
+		
+		  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		    MarketsandMarkets.
+		    “Wearable Healthcare Devices Market: Growth, Size, Share, and Trends.”
+		    (2025).
+		    https://www.marketsandmarkets.com/Market-Reports/wearable-medical-device-market-81753973.html
+		  </li>
+		  
+	  	<li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		  Arduino Documentation.
+		  "LCD Displays: Schematic."
+		  Arduino.cc.
+		  https://docs.arduino.cc/learn/electronics/lcd-displays/#schematic
+		</li>
+		  
+		<li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		  Abhigyan.
+		  "Introduction to the Savitzky-Golay Filter: A Comprehensive Guide Using Python."
+		  Medium / Python Engineered.
+		  (2023).
+		  https://medium.com/pythoneers/introduction-to-the-savitzky-golay-filter-a-comprehensive-guide-using-python-b2dd07a8e2ce
+		</li>
+		  
+		<li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		  Yuri.
+		  "Peak Detection."
+		  archive.yuri.is.
+		  https://archive.yuri.is/observing/peak-detection/
+		</li>
+	  </ol>
   </section>
 
 	<!-- Documents -->
@@ -334,8 +561,9 @@
     </h2>
     <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">	
 	  
-	</section>
 
+	</section>
+  
   <!-- Footer -->
   <footer
     class="text-center" style="background-color:#011F5B; color:white; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
