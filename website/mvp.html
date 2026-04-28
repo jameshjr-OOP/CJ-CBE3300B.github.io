@@ -37,10 +37,10 @@
 	    Summary
 	  </a>
 		<a href="#3dprint" class="btn m-2" style="color:white; border:1px solid white;">
-	    Mark II Design
+	    Final Design
 	  </a>
 		<a href="#code" class="btn m-2" style="color:white; border:1px solid white;">
-	    Mark II Code
+	    Final Code
 	  </a>
 		</a>
 		<a href="#circuitdesign" class="btn m-2" style="color:white; border:1px solid white;">
@@ -67,17 +67,14 @@
 
   <ol style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif; padding-left: 2rem;">
   		<li>Minor alteration to the fingerclip design</li>
-	  	<li>Soildered the pulseometer circuit</li>
-	 	<li>Converted code all into Arduino</li>
-	  	<li>Get pulseometer to work w/o laptop</li>
-	  	<li>Add LCD sceen to display BPM</li>
+
 	</ol>
   </section>
 
 	<!-- Mark II Design -->
   <section id="3dprint" class="container py-3">
   <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
-    Mark II Design
+    Minimum Viable Product Design
   </h2>
   <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
@@ -103,7 +100,7 @@
 	<!-- Mark II Code -->
   <section id="code" class="container py-3">
   <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
-    Mark II Code
+    Minimum Viable Product Code
   </h2>
   <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 	  
@@ -115,199 +112,417 @@
   </p>
 
   <pre><code>
-    #include <LiquidCrystal.h>
+    // ============================================================================
+// PULSEOMETER - Arduino-based heart rate monitor
+// ============================================================================
+// Reads a photosensor that detects blood flow changes in a finger, finds
+// the heartbeat peaks, and displays BPM on a 16x2 LCD.
+//
+// HARDWARE:
+//   - Analog pulse sensor (photodiode + hardware filter) on pin A0
+//   - 16x2 LCD on digital pins 12, 11, 5, 4, 3, 2
+//   - Finger placed nail-side down on sensor for best signal
+//
+// SIGNAL CHAIN:
+//   Raw ADC reading (0-1023)
+//     -> Invert to 0-1 float (so heartbeats appear as peaks, not dips)
+//     -> Store in 4-second rolling buffer
+//     -> Every 2 seconds: find peaks, compute BPM from peak spacing
+//     -> Display on LCD
+// ============================================================================
 
+#include <LiquidCrystal.h>
+
+// LCD pin mapping: RS, E, D4, D5, D6, D7
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
-// ============================================================
-// Custom characters
-// ============================================================
+
+// ============================================================================
+// CUSTOM LCD CHARACTERS
+// ============================================================================
+// Two custom 5x8 pixel icons drawn onto the LCD's custom character slots.
+// Each byte is one row, each bit a pixel (1 = on, 0 = off).
+// - Heart: shown when a valid pulse is being detected
+// - Skull: shown when no pulse has been detected for a while
+// ============================================================================
+
 byte skull[8] = {
-  0b01110,
-  0b10101,
-  0b11011,
-  0b01110,
-  0b01110,
-  0b00000,
-  0b01110,
+  0b01110,   // Round head outline
+  0b10101,   // Eye sockets (pixels off where eyes go)
+  0b11011,   // Cheekbones
+  0b01110,   // Jaw
+  0b01110,   // Neck
+  0b00000,   // (gap)
+  0b01110,   // Body/spine hint
   0b00000
 };
 
 byte heart[8] = {
   0b00000,
-  0b01010,
+  0b01010,   // Two lobes at top
+  0b11111,   // Widest part
   0b11111,
-  0b11111,
-  0b01110,
-  0b00100,
+  0b01110,   // Narrowing
+  0b00100,   // Pointed bottom
   0b00000,
   0b00000
 };
 
-// ============================================================
-// 1) Settings
-// ============================================================
-const int PULSE_PIN = A0;
-const int SAMPLE_INTERVAL = 20;
-const int WINDOW = 200;
 
-// ============================================================
-// 2) Smoothing
-// ============================================================
-const int SMOOTH_WINDOW = 11;
-float smoothBuffer[SMOOTH_WINDOW];
-int smoothIndex = 0;
+// ============================================================================
+// 1) CORE SETTINGS
+// ============================================================================
+// These three values define the timing and size of everything downstream.
+// Changing SAMPLE_INTERVAL requires rethinking WINDOW, MIN_DISTANCE, etc.
+// ============================================================================
 
-float smoothSample(float newVal) {
-  smoothBuffer[smoothIndex] = newVal;
-  smoothIndex = (smoothIndex + 1) % SMOOTH_WINDOW;
-  float sum = 0;
-  for (int i = 0; i < SMOOTH_WINDOW; i++) sum += smoothBuffer[i];
-  return sum / SMOOTH_WINDOW;
-}
+const int PULSE_PIN = A0;           // Analog pin connected to pulse sensor output
 
-// ============================================================
-// 3) Circular buffer
-// ============================================================
-float samples[WINDOW];
-int sampleIndex = 0;
-int totalSamples = 0;
+const int SAMPLE_INTERVAL = 50;     // Time between samples in milliseconds.
+                                    // 50ms = 20 Hz sampling rate.
+                                    // We use 20 Hz (not 50 Hz) because at
+                                    // higher rates this particular sensor picks
+                                    // up too much noise. 20 Hz gives clean,
+                                    // readable heartbeat waveforms.
 
-// ============================================================
-// 4) Peak Detection
-// ============================================================
-const int MIN_DISTANCE = 25;
-const float PROMINENCE = 0.003;
+const int WINDOW = 80;              // How many samples we analyze at once.
+                                    // 80 samples at 20 Hz = 4 seconds of data.
+                                    // 4 seconds is long enough to capture
+                                    // 3-6 heartbeats for a stable BPM estimate.
 
-int peakIndices[20];
-int peakCount = 0;
+
+// ============================================================================
+// 2) CIRCULAR SAMPLE BUFFER
+// ============================================================================
+// A circular (ring) buffer stores the most recent WINDOW samples.
+// "Circular" means when we reach the end, we wrap back to the start and
+// overwrite the oldest value. This avoids ever having to shift data around,
+// which would be slow.
+//
+// sampleIndex always points to the NEXT write position, which means it also
+// points to the OLDEST sample in the buffer (the one about to be overwritten).
+// ============================================================================
+
+float samples[WINDOW];              // The rolling buffer of recent readings
+int sampleIndex = 0;                // Next write position (also oldest sample)
+int totalSamples = 0;               // Counts up until buffer fills for the
+                                    // first time - we don't want to run peak
+                                    // detection until we have 4 full seconds.
+
+
+// ============================================================================
+// 3) PEAK DETECTION PARAMETERS
+// ============================================================================
+// These control how strict we are about what counts as a "heartbeat peak."
+// Tuning these is the main way to balance sensitivity vs. false positives.
+// ============================================================================
+
+const int MIN_DISTANCE = 10;        // Minimum samples between consecutive peaks.
+                                    // 10 samples at 20 Hz = 500ms = max 120 BPM.
+                                    // This prevents counting the same beat
+                                    // twice (e.g. if a peak has a small dip
+                                    // in the middle that looks like 2 peaks).
+
+const int PROM_LOOKBACK = 5;        // How many samples to look left/right when
+                                    // measuring a peak's "prominence" (how
+                                    // much it stands out from its surroundings).
+                                    // Kept small (5) because heartbeats happen
+                                    // often - if we look too far, we see the
+                                    // NEXT beat's valley and mis-measure.
+
+const float PROMINENCE = 0.005;     // Minimum prominence for a peak to count.
+                                    // Real heartbeats typically have prominence
+                                    // 0.006-0.010 on this sensor; noise is
+                                    // typically under 0.003. 0.005 sits in the
+                                    // clean gap between them.
+
+int peakIndices[20];                // Stores positions (in window) of peaks
+                                    // found during detection. Size 20 is
+                                    // plenty - at max 120 BPM in 4s we'd
+                                    // get at most 8 peaks.
+int peakCount = 0;                  // How many peaks were found this cycle
+
+
+// ---- Diagnostic variables (for Serial Monitor tuning output) ----
+float acceptedProms[20];            // Records prominence values of accepted peaks
+int acceptedPromCount = 0;
+float maxRejectedProm = 0.0;        // Largest prominence that still failed the
+                                    // threshold - useful to see if noise is
+                                    // sneaking close to our threshold.
+
+
+// ============================================================================
+// 4) detectPeaks() - Find all heartbeat peaks in the current buffer
+// ============================================================================
+// Walks through every sample in the buffer (oldest to newest) and checks:
+//   1. Is this sample higher than both its immediate neighbors? (local max)
+//   2. Is it far enough from the previous accepted peak? (MIN_DISTANCE)
+//   3. Does it rise at least PROMINENCE above the nearby valleys?
+//
+// Passing all three = accepted peak. Anything else gets rejected.
+// ============================================================================
 
 void detectPeaks() {
+  // Reset state for this detection cycle
   peakCount = 0;
-  int lastPeak = -MIN_DISTANCE;
+  acceptedPromCount = 0;
+  maxRejectedProm = 0.0;
+  int lastPeak = -MIN_DISTANCE;    // Initialized so first peak is always
+                                   // far enough from "previous" peak.
 
+  // Walk through buffer from index 1 to WINDOW-2 (skip first/last since
+  // they have no neighbors to compare to for the local-max check)
   for (int i = 1; i < WINDOW - 1; i++) {
+    // Read 3 consecutive samples: previous, current, next.
+    // The (sampleIndex + i) % WINDOW math translates "position i from the
+    // oldest sample" into the actual memory index in the circular buffer.
     float prev = samples[(sampleIndex + i - 1) % WINDOW];
     float curr = samples[(sampleIndex + i) % WINDOW];
     float next = samples[(sampleIndex + i + 1) % WINDOW];
 
+    // CHECK 1: Is this a local maximum? Must be strictly higher than
+    // both neighbors. Equal values don't count (reduces duplicate detections).
     if (curr <= prev || curr <= next) continue;
+
+    // CHECK 2: Is this far enough from the previous peak? Prevents counting
+    // the same heartbeat twice if it has small sub-peaks.
     if (i - lastPeak < MIN_DISTANCE) continue;
 
+    // CHECK 3 (setup): Find the lowest value within PROM_LOOKBACK samples
+    // on the LEFT side. This is our reference valley on the left.
     float leftMin = curr;
-    for (int j = max(0, i - MIN_DISTANCE); j < i; j++)
+    for (int j = max(0, i - PROM_LOOKBACK); j < i; j++)
       leftMin = min(leftMin, samples[(sampleIndex + j) % WINDOW]);
 
+    // Same for the RIGHT side
     float rightMin = curr;
-    for (int j = i + 1; j <= min(WINDOW - 1, i + MIN_DISTANCE); j++)
+    for (int j = i + 1; j <= min(WINDOW - 1, i + PROM_LOOKBACK); j++)
       rightMin = min(rightMin, samples[(sampleIndex + j) % WINDOW]);
 
+    // Prominence = height of peak above the HIGHER of the two valleys.
+    // We use max() because a peak surrounded by a deep valley on one side
+    // but a shallow valley on the other is really only as "prominent" as
+    // the shallower side allows.
     float prom = curr - max(leftMin, rightMin);
-    if (prom < PROMINENCE) continue;
 
+    // CHECK 3 (decision): Is the peak tall enough above surroundings?
+    if (prom < PROMINENCE) {
+      // Track the biggest rejected peak for diagnostics - if this gets
+      // close to PROMINENCE, our threshold might be too strict.
+      if (prom > maxRejectedProm) maxRejectedProm = prom;
+      continue;
+    }
+
+    // All 3 checks passed - accept this peak!
+    if (acceptedPromCount < 20) {
+      acceptedProms[acceptedPromCount++] = prom;
+    }
     peakIndices[peakCount++] = i;
     lastPeak = i;
-    if (peakCount >= 20) break;
+    if (peakCount >= 20) break;    // Safety bound on array
   }
 }
 
-// ============================================================
-// 5) BPM Calculation
-// ============================================================
+
+// ============================================================================
+// 5) calculateBPM() - Convert peak positions to beats-per-minute
+// ============================================================================
+// Given N peaks, we have N-1 "intervals" (distances between consecutive peaks).
+// We use the MEDIAN of these intervals rather than the mean because:
+//   - Mean gets thrown off badly by a single bad peak.
+//   - Median is the middle value after sorting; one outlier can't move it much.
+// The median interval (in samples) is converted to BPM.
+// ============================================================================
+
 float calculateBPM() {
-  if (peakCount < 2) return -1;
+  if (peakCount < 2) return -1;    // Need at least 2 peaks for 1 interval
 
-  float totalInterval = 0;
-  for (int i = 1; i < peakCount; i++)
-    totalInterval += peakIndices[i] - peakIndices[i - 1];
+  // STEP 1: Build array of gaps between consecutive peaks
+  int numIntervals = peakCount - 1;
+  float intervals[19];             // Max 20 peaks -> max 19 intervals
+  for (int i = 0; i < numIntervals; i++) {
+    intervals[i] = peakIndices[i + 1] - peakIndices[i];
+  }
 
-  float avgInterval = totalInterval / (peakCount - 1);
-  float fs = 1000.0 / SAMPLE_INTERVAL;
-  return 60.0 / (avgInterval / fs);
+  // STEP 2: Sort the intervals in ascending order using insertion sort.
+  // Insertion sort is O(n^2), but with only ~5 intervals it's fine
+  // and uses less memory than fancier sorts.
+  for (int i = 1; i < numIntervals; i++) {
+    float key = intervals[i];
+    int j = i - 1;
+    while (j >= 0 && intervals[j] > key) {
+      intervals[j + 1] = intervals[j];
+      j--;
+    }
+    intervals[j + 1] = key;
+  }
+
+  // STEP 3: Find the median.
+  // - Odd count: just the middle element
+  // - Even count: average of the two middle elements
+  float medianInterval;
+  if (numIntervals % 2 == 1) {
+    medianInterval = intervals[numIntervals / 2];
+  } else {
+    medianInterval = (intervals[numIntervals / 2 - 1] + intervals[numIntervals / 2]) / 2.0;
+  }
+
+  // STEP 4: Convert sample-count interval to BPM.
+  // If peaks are 20 samples apart at 20 Hz sampling:
+  //   interval in seconds = 20 / 20 = 1 second
+  //   BPM = 60 seconds / 1 second = 60 BPM
+  float fs = 1000.0 / SAMPLE_INTERVAL;    // Sample rate in Hz (= 20)
+  return 60.0 / (medianInterval / fs);
 }
 
-// ============================================================
-// 6) Setup
-// ============================================================
+
+// ============================================================================
+// 6) setup() - Runs once at startup
+// ============================================================================
+// Initialize Serial, LCD, custom characters, and buffer state.
+// ============================================================================
+
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(9600);              // For diagnostic output
+
+  // LCD setup: 16 columns, 2 rows, load custom characters into slots 0 & 1
   lcd.begin(16, 2);
   lcd.createChar(0, skull);
   lcd.createChar(1, heart);
+
+  // Initial display state - heart icon and placeholder BPM
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Pulseometer ");
-  lcd.write(byte(1));  // heart on startup
+  lcd.write(byte(1));              // Show heart icon
   lcd.setCursor(0, 1);
   lcd.print("BPM: --");
 
+  // Pre-fill buffer with neutral values so peak detection doesn't
+  // find fake peaks while buffer fills up for the first time
   for (int i = 0; i < WINDOW; i++) samples[i] = 0.5;
-  for (int i = 0; i < SMOOTH_WINDOW; i++) smoothBuffer[i] = 0.5;
+
+  // Print header for serial diagnostics
+  Serial.println("=== Pulseometer @ 20 Hz, median BPM ===");
+  Serial.print("PROMINENCE = ");
+  Serial.print(PROMINENCE, 4);
+  Serial.print(" | MIN_DISTANCE = ");
+  Serial.print(MIN_DISTANCE);
+  Serial.print(" | PROM_LOOKBACK = ");
+  Serial.println(PROM_LOOKBACK);
+  Serial.println("Format: peaks=N | BPM (median) | accepted proms | maxRejected");
+  Serial.println();
 }
 
-// ============================================================
-// 7) Loop
-// ============================================================
-unsigned long lastSample = 0;
-unsigned long lastBPMUpdate = 0;
-unsigned long zeroBPMStart = 0;
+
+// ============================================================================
+// 7) loop() - Runs repeatedly forever
+// ============================================================================
+// Two independent timed actions happen here:
+//   (A) Every 50ms: take a new sample and add it to the buffer
+//   (B) Every 2000ms: analyze the buffer and update BPM display
+// Using millis() instead of delay() means both can run on their own
+// schedules without blocking each other.
+// ============================================================================
+
+unsigned long lastSample = 0;       // Tracks when we last sampled
+unsigned long lastBPMUpdate = 0;    // Tracks when we last computed BPM
+unsigned long zeroBPMStart = 0;     // Tracks when BPM first went invalid,
+                                    // used for the skull-display timeout
 
 void loop() {
+
+  // --------------------------------------------------------------------------
+  // (A) SAMPLING: every SAMPLE_INTERVAL ms, read the sensor
+  // --------------------------------------------------------------------------
   if (millis() - lastSample >= SAMPLE_INTERVAL) {
     lastSample = millis();
 
+    // Read raw ADC value (0-1023 from the 10-bit ADC)
     int raw = analogRead(PULSE_PIN);
+
+    // Invert and scale to 0-1 range.
+    // Why invert? Our sensor outputs LOWER values when more light is absorbed
+    // (during a heartbeat when blood volume increases). We invert so
+    // heartbeats appear as PEAKS in our data, which is what our peak
+    // detection algorithm expects.
     float inv = 1.0 - (raw / 1023.0);
-    float smoothed = smoothSample(inv);
 
-    samples[sampleIndex] = smoothed;
+    // Write to the current slot in the circular buffer, then advance index
+    samples[sampleIndex] = inv;
     sampleIndex = (sampleIndex + 1) % WINDOW;
-    if (totalSamples < WINDOW) totalSamples++;
 
-    Serial.println(smoothed);
+    // Track how full the buffer is (only up to WINDOW - after that it's full)
+    if (totalSamples < WINDOW) totalSamples++;
   }
 
+  // --------------------------------------------------------------------------
+  // (B) BPM UPDATE: every 2 seconds, analyze the buffer and update display
+  // --------------------------------------------------------------------------
+  // Also requires the buffer to be full (4 full seconds of samples collected).
   if (millis() - lastBPMUpdate >= 2000 && totalSamples >= WINDOW) {
     lastBPMUpdate = millis();
 
-    detectPeaks();
-    float bpm = calculateBPM();
+    detectPeaks();                 // Finds peaks, fills peakIndices[]
+    float bpm = calculateBPM();    // Uses peakIndices[] to compute BPM
 
+    // ---- Print diagnostic info to Serial Monitor ----
+    Serial.print("peaks=");
+    Serial.print(peakCount);
+    Serial.print(" | ");
     if (bpm > 0) {
-      // valid BPM - reset timer, show heart
-      zeroBPMStart = 0;
+      Serial.print("BPM=");
+      Serial.print(bpm, 1);
+    } else {
+      Serial.print("BPM=--");
+    }
+    Serial.print(" | accepted proms [");
+    for (int i = 0; i < acceptedPromCount; i++) {
+      Serial.print(acceptedProms[i], 4);
+      if (i < acceptedPromCount - 1) Serial.print(", ");
+    }
+    Serial.print("] | maxRejected=");
+    Serial.println(maxRejectedProm, 4);
 
+    // ---- Update LCD display based on validity of BPM ----
+    if (bpm > 0) {
+      // Valid BPM detected
+      zeroBPMStart = 0;            // Reset the "no pulse" timer
+
+      // Line 1: Name + heart icon
       lcd.setCursor(0, 0);
       lcd.print("Pulseometer ");
-      lcd.write(byte(1));  // heart
-      lcd.print("   ");
+      lcd.write(byte(1));          // heart
+      lcd.print("   ");             // Overwrite any leftover chars
 
+      // Line 2: BPM reading
       lcd.setCursor(0, 1);
       lcd.print("BPM: ");
       lcd.print(bpm, 1);
-      lcd.print("   ");
+      lcd.print("   ");             // Pad so old digits don't linger
 
     } else {
-      // no BPM - start timer
+      // BPM invalid (fewer than 2 peaks found this cycle)
+
+      // Start the no-pulse timer if this is the first invalid cycle
       if (zeroBPMStart == 0) zeroBPMStart = millis();
 
+      // After 500ms of no-pulse, show the skull. Before 500ms, just
+      // show "BPM: --" with heart (so brief glitches don't flash skull).
       if (millis() - zeroBPMStart >= 500) {
-        // 5 seconds with no pulse - show skull
+        // Skull mode: been invalid for a while, display clearly shows no pulse
         lcd.setCursor(0, 0);
         lcd.print("Pulseometer ");
-        lcd.write(byte(0));  // skull
+        lcd.write(byte(0));        // skull
         lcd.print("   ");
-
         lcd.setCursor(0, 1);
         lcd.print("BPM: ---    ");
-
       } else {
-        // waiting - keep heart, show --
+        // Grace period: briefly show dashes but keep heart (might recover)
         lcd.setCursor(0, 0);
         lcd.print("Pulseometer ");
-        lcd.write(byte(1));  // heart
+        lcd.write(byte(1));        // heart
         lcd.print("   ");
-
         lcd.setCursor(0, 1);
         lcd.print("BPM: --     ");
       }
@@ -550,6 +765,13 @@ void loop() {
 		  "Peak Detection."
 		  archive.yuri.is.
 		  https://archive.yuri.is/observing/peak-detection/
+		</li>
+
+		<li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		  fiona-.
+		  "Pulse Oximeter."
+		  [projecthub.arduino.cc](http://projecthub.arduino.cc).
+		  https://projecthub.arduino.cc/fiona-/pulse-oximeter-1298d5
 		</li>
 	  </ol>
   </section>
