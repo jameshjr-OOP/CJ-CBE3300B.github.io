@@ -426,41 +426,33 @@
     </h2>
     <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 
-    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      Challenges in producing an effective and accurate pulseometer relate to understanding the
-      interaction of light with human skin tissue, small signals with a large amount of background noise,
-      and user interaction with the equipment.
-    </p>
-
-    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      The focus point for our device is the finger, yet even the composition of the finger is very complex
-      and tissue properties vary widely from person to person. In our device, light must travel through every skin layer
-      (epidermis, dermis, and hypodermis), then through muscle, fascia, nerve tissue, and other connective tissue. Our device
-      should be able to function regardless of skin color (as melanin content can change refractive behavior of light), fat content,
-      or muscle content. While the patient is using the device, it should still be able to function under differing conditions of
-      fingertip perspiration, slight finger movement, or changing external lighting conditions. We accounted for these differences
-      by using wavelengths of light that work regardless of skin absorbers (like melanin) and target the absorption spectra of oxygenated
-      blood. We accounted for friendly user design by using a finger clip that blocks out external light sources and grips tight
-      enough to not be affected by user movement, but not so tight that it cuts off blood flow.
-    </p>
-
-    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      A challenge we faced in CBE 3300A when creating a rudimentary pulsometer was making a small signal amplified and
-      removing background signal and noise. The flushing of the skin that we are trying to detect is very minor, and creating
-      a device to measure these slight changes could be likened to finding a needle in a haystack. There are many sources of
-      background signal and noise for PPG, but absorption from other tissues, background light, and user movement were the largest.
-      However, these factors generally do not change for an individual user while they are using the device, so it tends to result
-      in a baseline DC signal that we have to filter out. What is important is making sure the signal is able to stand out after we
-      remove everything else. We dealt with this by implementing new circuit design and signal processing techniques.
-    </p>
-
-    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      A specific challenge that emerged late in development was tuning the signal processing pipeline to the actual hardware behavior.
-      The Savitzky-Golay filter we initially used at 50 Hz was smearing peaks rather than cleaning them, and the prominence threshold
-      we picked early on was based on assumed signal levels that didn't match what the circuit was actually producing. Resolving this
-      required going back to raw, unfiltered data and rebuilding the pipeline parameter-by-parameter against measured values rather
-      than assumed ones.
-    </p>
+     <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Challenges in producing an effective & accurate pulsometer relate to understanding the 
+		interaction of light with human skin tissue, small signals with a large amount of background noise, 
+		user interaction with the equipment. 
+	</p>
+		
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		The focus point for our device is the finger, yet even the composition of the finger is very complex 
+		and tissue properties vary widely from person to person. In our device, light must travel through every skin layer 
+		(epidermis, dermis, and hypodermis), then through muscle, fascia, nerve tissue, and other connective tissue. Our device
+		should be able to function regardless of skin color (as melanin content can change refractive behavior of light), fat content, 
+		or muscle content. While the patient is using the device, it should still be able to function under differing conditions of 
+		fingertip perspiration, slight finger movement, or changing external lighting conditions. We plan to account for these differences 
+		by using wavelengths of light that work regardless of skin absorbers (like melanin) and target the absorption spectra of oxygenated 
+		blood. We will account for friendly user design by using a finger clip that will block out external light sources and will grip tight 
+		enough to not be affected by user movement, but not so tight that it cuts off blood flow.
+	</p>
+		
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		A challenge we faced in CBE 3300A when creating a rudimentary pulsometer is making a small signal amplified and 
+		removing background signal and noise. The flushing of the skin that we are trying to detect is very minor, and creating
+		a device to measure these slight changes could be likened to finding a needle in a haystack. There are many sources of 
+		background signal and noise for PPG, but absorption from other tissues, background light, and user movement were the largest. 
+		However, these factors generally do not change for an individual user while they are using the device, so it tends to result 
+		in a baseline DC signal that we have to filter out. What is important is making sure the signal is able to stand out after we 
+		remove everything else. We plan to deal with this by implementing new circuit design and signal processing techniques. 
+	</p>
   </section>
 
   <!-- Next Steps -->
