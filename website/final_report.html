@@ -35,11 +35,11 @@
 	  <a href="#intro" class="btn m-2" style="color:white; border:1px solid white;">
 	    Introduction
 	  </a>
-	  <a href="#methodology" class="btn m-2" style="color:white; border:1px solid white;">
-	    Methodology
-	  </a>
 	  <a href="#market" class="btn m-2" style="color:white; border:1px solid white;">
 	    Market
+	  </a>
+		<a href="#methodology" class="btn m-2" style="color:white; border:1px solid white;">
+	    Methodology
 	  </a>
 	  <a href="#materials" class="btn m-2" style="color:white; border:1px solid white;">
 	    Materials
@@ -93,6 +93,46 @@
     </p>
   </section>
 
+<!-- Economic and Market Analysis -->
+  <section id="market" class="container py-3">
+    <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
+      Economic and Market Analysis
+    </h2>
+    <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+
+    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+      The global market for wearable healthcare devices is projected to increase by $75.98 billion
+      by 2030, representing a 67.76% increase over its 2025 value. Over this forecast period, the
+      market is expected to grow at a compound annual growth rate (CAGR) of 10.9%. This shows the
+      demand for wearable healthcare devices will continue to grow. This market includes devices that
+      measure pulse, blood-oxygen levels, glucose, insulin, and more with the purpose of focusing on
+      this market because there isn’t an explicit pulsometer market, only a pulse oximeter market.
+      For the SWOT analysis, we have identified the following:
+    </p>
+
+    <ul style="list-style: none; font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+        <li><strong>STRENGTH</strong>   Our product only has one feature and so our focus is to have the pulse readings more accurate than other products</li>
+        <li><strong>WEAKNESS</strong>   Since we are using an arduino, the product will be more clunky to wear</li>
+        <li><strong>OPPORTUNITY</strong>   General health awareness amongst people is rising, making it more likely our product will sell</li>
+        <li><strong>THREAT</strong>   Most pulsometers on the market also function as an oximeter, making our product have less features than competitors</li>
+    </ul>
+
+    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+      To better understand where our product would sit in the market, we looked at competitors that offer heart rate monitoring as part of their product. The smartwatch
+      category (Apple, Samsung, Fitbit) typically offers heart rate, blood oxygen, sleep tracking, and other fitness features at a price range of roughly $65 to $799. The
+      dedicated pulse oximeter category (Masimo, Medtronic, Wellue) offers heart rate and blood oxygen at a price range of roughly $20 to $700. Across all six competitors
+      we looked at, the average price range is approximately $148 to $522.
+    </p>
+
+    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+      Looking at the bill of materials for our own product, the component cost is significantly lower than what is on the market. The IR LED is roughly $0.90, the
+      photodiode is $1.40, the resistors total $0.25, the capacitors total $0.21, the op-amps total $0.64, the microcontroller is between $5 and $15 depending on whether
+      we use the Arduino Uno or a smaller microcontroller, and the mini LCD is roughly $5. The total component cost is between $13.40 and $23.40. Even after accounting
+      for the 3D printed housing, assembly, and a reasonable markup, our product could be priced well below the competitor average while still maintaining margin. The
+      tradeoff is that our product currently only measures heart rate, not blood oxygen, and is bulkier than a smartwatch.
+    </p>
+  </section>
+	
   <!-- Methodology & Engineering Principles -->
   <section id="methodology" class="container py-3">
     <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
@@ -206,47 +246,7 @@
     </p>
   </section>
 
-  <!-- Economic and Market Analysis -->
-  <section id="market" class="container py-3">
-    <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
-      Economic and Market Analysis
-    </h2>
-    <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
-
-    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      The global market for wearable healthcare devices is projected to increase by $75.98 billion
-      by 2030, representing a 67.76% increase over its 2025 value. Over this forecast period, the
-      market is expected to grow at a compound annual growth rate (CAGR) of 10.9%. This shows the
-      demand for wearable healthcare devices will continue to grow. This market includes devices that
-      measure pulse, blood-oxygen levels, glucose, insulin, and more with the purpose of focusing on
-      this market because there isn’t an explicit pulsometer market, only a pulse oximeter market.
-      For the SWOT analysis, we have identified the following:
-    </p>
-
-    <ul style="list-style: none; font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-        <li><strong>STRENGTH</strong>   Our product only has one feature and so our focus is to have the pulse readings more accurate than other products</li>
-        <li><strong>WEAKNESS</strong>   Since we are using an arduino, the product will be more clunky to wear</li>
-        <li><strong>OPPORTUNITY</strong>   General health awareness amongst people is rising, making it more likely our product will sell</li>
-        <li><strong>THREAT</strong>   Most pulsometers on the market also function as an oximeter, making our product have less features than competitors</li>
-    </ul>
-
-    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      To better understand where our product would sit in the market, we looked at competitors that offer heart rate monitoring as part of their product. The smartwatch
-      category (Apple, Samsung, Fitbit) typically offers heart rate, blood oxygen, sleep tracking, and other fitness features at a price range of roughly $65 to $799. The
-      dedicated pulse oximeter category (Masimo, Medtronic, Wellue) offers heart rate and blood oxygen at a price range of roughly $20 to $700. Across all six competitors
-      we looked at, the average price range is approximately $148 to $522.
-    </p>
-
-    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      Looking at the bill of materials for our own product, the component cost is significantly lower than what is on the market. The IR LED is roughly $0.90, the
-      photodiode is $1.40, the resistors total $0.25, the capacitors total $0.21, the op-amps total $0.64, the microcontroller is between $5 and $15 depending on whether
-      we use the Arduino Uno or a smaller microcontroller, and the mini LCD is roughly $5. The total component cost is between $13.40 and $23.40. Even after accounting
-      for the 3D printed housing, assembly, and a reasonable markup, our product could be priced well below the competitor average while still maintaining margin. The
-      tradeoff is that our product currently only measures heart rate, not blood oxygen, and is bulkier than a smartwatch.
-    </p>
-  </section>
-
-  <!-- Materials -->
+    <!-- Materials -->
   <section id="materials" class="container py-3">
     <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
       Materials
