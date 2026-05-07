@@ -304,18 +304,49 @@
     <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 
     <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      From the intermediate prototype to the MVP, the signal processing pipeline was rebuilt to better match what the
-      hardware was actually delivering. The Savitzky-Golay filter from the intermediate code was removed entirely; at
-      the new sampling rate, the filter window was wider than a single heartbeat and was smearing out the very peaks we
-      were trying to detect. The sampling rate was lowered from 50 Hz to 20 Hz, which counterintuitively gave a cleaner
-      signal because the slower rate let the hardware filter do its job without the higher-frequency noise being captured.
-      The analysis window was resized from 200 samples to 80 samples to keep the 4-second time window at the new rate, and the
-      minimum-distance parameter was scaled accordingly (25 → 10 samples) to maintain the same 500 ms peak-to-peak floor. A new
-      PROM_LOOKBACK parameter (5 samples) was introduced and decoupled from the minimum-distance value, because at 20 Hz a single
-      heartbeat dip is only about 7 samples wide and the prominence calculation was reaching into the neighboring beat and getting
-      corrupted. The prominence threshold was raised from 0.003 to 0.005 once we measured the clean gap between real peak heights
-      (0.006–0.012) and the noise floor (under 0.003). Finally, the BPM calculation was switched from the mean of peak intervals to the
-      median, so a single mis-detected peak can no longer skew the entire reading.
+    First we have the window, which is a rolling buffer that stores the last 4 seconds of sensor readings (80 samples) so the program always has a 
+		fresh chunk of recent data to analyze.
+	</p>
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+	Then we have the peak detection. The way it works is that every 2 seconds the program scans through all the samples in the 
+		window and checks each one against three rules. The first rule is that the sample has to be higher than the samples directly 
+		before and after it, meaning it sits at a local high point. The second rule is that the peak has to be at least 10 samples (half a second) 
+		away from the previous accepted peak, which keeps a single heartbeat from being counted twice. The third rule is a prominence check, 
+		which measures how far the peak stands above the nearby valleys and rejects anything that does not stand out enough to be a real beat. 
+		If a peak passes all three rules it gets added to an array.
+	</p>
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+	Once at least two peaks have been collected the program calculates the BPM. It does this by measuring 
+		the spacing between each pair of consecutive peaks, then taking the median of those spacings rather 
+		than the simple average so a single bad reading cannot throw the result off. That spacing gets converted 
+		from samples into seconds, and from seconds into beats per minute.
+	</p>
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+	The product also shows emoticons depending on what the machine sees, a heart if it has a valid BPM and a 
+		skull if no pulse has been found for more than half a second. This is all done through an LCD screen 
+		which also displays the current BPM number underneath the icon. An example of what a user may see is shown below.
+    </p>
+
+	<div style="text-align: center; margin: 2rem 0;">
+        <img src="img/LCD_heart.png" alt="Mark II Finger Clip"
+             style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+    </div>
+    <div style="text-align: center; margin: 2rem 0;">
+        <img src="img/LCD_skull.png" alt="Case with LCD Screen Slot"
+             style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+    </div>
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+      There was a moment when creating the code that it ran in python and the arduino had a code that 
+		took the data and sent it to a laptop. This was supposed to make it easier to conduct signal processing; 
+		however when we decided we wanted to have the device stand alone, this meant reverting all the python code 
+		back into arduino code to handle the processing. Another change within the code since the first edition, there 
+		was initially a Savitzky-Golay filter that was removed. The filter was supposed to be a way to reduce any noise 
+		so peak detection becomes easier; however the filter was filtering multiple peaks into one. This made the data 
+		completely inaccurate, so we decided to abandon the filter. Besides that, the code has stayed relatively the same.
     </p>
 
     <div class="ratio" style="--bs-aspect-ratio: 75%; margin-bottom: 2rem;">
@@ -325,22 +356,6 @@
         loading="lazy">
       </iframe>
     </div>
-
-    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      The methodology behind these changes was driven entirely by looking at raw data first, rather than guessing
-      at parameters. We started by writing a minimal test sketch that did nothing but read the analog pin and print
-      the value, with no filtering or peak detection in the way. By capturing roughly 100 consecutive raw samples while
-      holding a finger still on the sensor and laying them out in sequence, we could count real heartbeats by eye and measure
-      their actual depth in ADC counts. This revealed two important things: the hardware filter was producing a clean, recognizable
-      PPG waveform (we had been blaming the hardware for issues that were actually downstream), and finger orientation mattered far
-      more than we realized — placing the finger nail-side down with light contact gave dramatically better signal than pressing the
-      pad firmly against the sensor. To debug the full pipeline, we added diagnostic Serial output to every BPM update cycle: the peak count,
-      the prominence of every accepted peak, and the largest prominence that was still rejected. By printing these every two seconds and watching
-      them scroll, we could see in real time whether the threshold was well-placed (clean gap between accepted and rejected values), whether the filter
-      was hurting the signal (accepted prominences much smaller than the raw-data measurements suggested they should be), and whether the BPM swings
-      were being driven by a few outlier peaks. Each parameter change was followed by another diagnostic run to confirm the improvement was real, not
-      just a one-time good cycle.
-    </p>
   </section>
 
   <!-- Final Design -->
