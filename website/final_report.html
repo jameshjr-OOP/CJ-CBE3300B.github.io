@@ -462,30 +462,27 @@
     </h2>
     <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 
-    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      The goal of this project is to create a commercially viable pulseometer, but in
-      order to do this faithfully we would need to include blood oximetry measurements.
-      To do this we would need a second LED of a lower
-      wavelength (in the visible red spectrum) and we would need to process that second signal
-      in real time, same as the IR signal. With a device using this dual-LED setup, we could
-      measure far more complex bodily functions, like sleep tracking and workout activity, similar
-      to products like a Fitbit or Apple Watch.
-    </p>
-
-    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      Another goal would be to improve the user experience. The circuit described above is bulky,
-      and therefore difficult to take on the go. If we could miniaturize this circuit on a printed circuit
-      board, and use a much smaller microcontroller, then we could embed the device entirely onto the finger
-      clip, and use bluetooth to communicate with a computer or a phone.
-    </p>
-
-    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      Finally, the performance data showed that grip and finger orientation were the dominant source of error,
-      especially after exercise. A future iteration should focus on mechanical refinements to the finger clip — such as
-      a contoured contact surface, a softer compliant gasket between the optical components and the skin, or an
-      orientation-detection step in firmware that warns the user when the finger is misaligned — to make the device
-      robust under realistic, non-ideal use conditions.
-    </p>
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		One of the main areas for improvement is the peak detection algorithm. The current implementation 
+		uses a simple set of three rules which works reasonably well under ideal conditions, but struggles 
+		when the signal gets noisy or the user moves. Future iterations would benefit from researching more 
+		dvanced peak detection methods. 
+	</p>
+	
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Another goal is to make the device fully wireless and wearable, removing the need for 
+		the user to be tethered to the larger box that currently holds the Arduino, circuitry, 
+		and LCD screen. The ideal final form would be a self-contained finger clip that houses everything inside, 
+		with bluetooth sending the BPM reading to a phone or computer instead of relying on an onboard display. 	
+	</p>
+	
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		The third major addition would be blood oxygen saturation (SpO2) measurement, turning the pulseometer into 
+		a true pulse oximeter. SpO2 is calculated by comparing how the finger absorbs two different wavelengths of light, 
+		typically infrared and red. Implementing this would require adding a second red LED next to the existing IR LED, 
+		alternating between the two during sampling, and processing the ratio of their absorbances in real time. With both BPM 
+		and SpO2 in one device, our product would be directly comparable to the commercial finger clip oximeters already on the market.	
+	</p>
   </section>
 
   <!-- References -->
