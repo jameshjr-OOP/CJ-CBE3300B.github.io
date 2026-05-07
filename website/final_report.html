@@ -260,29 +260,25 @@
     </div>
 
     <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      This circuit is made up of four components. Going left to right, the first component is the finger cuff,
-      this is where the patient interacts with the device. The finger cuff is in the shape of a finger clip, with the
-      IR LED and the photodiode positioned on opposite sides of the finger. The photodiode converts light into electrical
-      current with a high sensitivity and linearity, which is helpful for the small signals we are working with. The second
-      component is the transimpedance amplifier (TIA). The current from the photodiode flows to the negative terminal of the
-      op-amp and through the gain-setting resistor. This creates a voltage at the output of the op-amp that is proportional
-      to the input current - the capacitor helps reduce noise. Next is a simple highpass filter; we are removing the DC baseline
-      signal that comes from the natural absorbance and scattering from the tissue. The last component is a non-inverting gain op-amp.
-      This amplifies the signal by a factor of R2/R1 (the ratio of the resistor in the feedback loop to the resistor connected to ground).
-      The capacitor in this stage blocks the DC signal that we added in the previous stage, amplifying only the AC signal that we care about.
+      This circuit is made up of four components. Going left to right, the first component is the finger 
+		cuff, this is where the patient interacts with the device. The finger cuff will be in the shape of 
+		a finger clip, with the IR LED and the photodiode positioned on opposite sides of the finger. The 
+		photodiode converts light into electrical current with a high sensitivity and linearity, which is 
+		helpful for the small signals we are working with. The second component is the transimpedance 
+		amplifier (TIA). The current from the photodiode flows to the negative terminal of the op-amp and 
+		through the gain-setting resistor. This creates a voltage at the output of the op-amp that is proportional 
+		to the input current - the capacitor helps reduce noise. Next is a simple highpass filter; we are removing 
+		the DC baseline signal that comes from the natural absorbance and scattering from the tissue. The last 
+		component is a non-inverting gain op-amp. This amplifies the signal by a factor of R2/R1 (the ratio of 
+		the resistor in the feedback loop to the resistor connected to ground). The capacitor in this stage 
+		blocks the DC signal that we added in the previous stage, amplifying only the AC signal that we care about.
     </p>
 
     <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      The goal of this whole process is to isolate the signal we care about (absorbance from oxygenated hemoglobin)
-      and amplify it while removing background signal / noise. In this circuit there is already signal processing with
-      multiple built-in filters, but there is more signal processing that has to happen in arduino. In order to remove
-      background noise from the environment, we can use background subtracted signal. We blink the IR LED on and off (50-500Hz)
-      and measure the signal in the on versus off state. Subtracting these two values will give us a reading that is roughly
-      independent of the surrounding conditions - like ambient lighting or different placements of the device on the finger.
-      Furthermore, in order to give a heart rate in bpm, it is necessary to do real-time peak detection on the signal. This peak
-      detection becomes very hard with noisy signal, but assuming we can tune our filter appropriately, this peak detection can
-      be done with a simple cut off. If the signal is higher than some predetermined baseline and the signal goes from increasing
-      to decreasing (instantaneous derivative = 0) then we can mark a peak. Time average between peaks gives the user real-time bpm.
+      The goal of this whole process is to isolate the signal we care about (absorbance from oxygenated hemoglobin) 
+		and amplify it while removing background signal / noise. In this circuit there is already signal processing 
+		with multiple built-in filters, but there is more signal processing that has to happen in arduino. In order 
+		to give a heart rate in bpm, it is necessary to real-time peak detection on the signal. Explained further below. 
     </p>
 
     <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
@@ -366,23 +362,36 @@
     <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 
     <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      Between the intermediate prototype and the MVP, the finger clip design itself was not changed - the clip from Mark II proved adequate, so the focus shifted to building a
-      proper housing for everything else. The main goal of this stage was to design a case that fit the MVP perfectly, holding the Arduino, the circuitry, and the LCD screen
-      together as one unit. With the casing in place, the device is now fully standalone: the user no longer needs a laptop to read the BPM, since the LCD screen mounted in
-      the case displays it directly.
-    </p>
-
-    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      To briefly describe the safety of our product; it is very safe. All wires and circuits are contained, it runs on low voltage, and LEDs do not overheat.
-      Overall there are no safety issues with our final product.
+      The final design of the C.R.O.I pulseometer is a traditional finger clip that latches on the 
+		pointer finger or thumb. This finger clip has an LED protruding into the interior of the clip 
+		that rests against the users finger, with a photodiode sunken into the casing of the clip directly opposite 
+		the LED, such that the light shines through the users finger. This finger clip was the creation of many rounds 
+		of prototyping, starting from a “watch” design that used reflective PPG instead of transmissive, then to a 
+		“finger box” design that had poor optical isolation and ergonomics, eventually moving on to the finger clip, 
+		with many iterations of design to get it ergonomical and effective. All of these designs were CAD-ed with 
+		autodesk fusion in-house, with inspiration taken from on-market pulseometers. The casing for the design was 
+		made such that it could fit all the circuit components and the arduino while having a viewing port for the 
+		LCD screen. For references to all the above see the following photo gallery.
     </p>
 
     <div style="text-align: center; margin: 2rem 0;">
-        <img src="img/mark II fingerclip.png" alt="Mark II Finger Clip"
+        <img src="img/design_1.png" alt="Mark II Finger Clip"
              style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
     </div>
     <div style="text-align: center; margin: 2rem 0;">
-        <img src="img/case_final.png" alt="Case with LCD Screen Slot"
+        <img src="img/design_2.png" alt="Case with LCD Screen Slot"
+             style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+    </div>
+	  <div style="text-align: center; margin: 2rem 0;">
+        <img src="img/design_3.png" alt="Case with LCD Screen Slot"
+             style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+    </div>
+	  <div style="text-align: center; margin: 2rem 0;">
+        <img src="img/design_4.png" alt="Case with LCD Screen Slot"
+             style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+    </div>
+	  <div style="text-align: center; margin: 2rem 0;">
+        <img src="img/design_5.png" alt="Case with LCD Screen Slot"
              style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
     </div>
   </section>
@@ -395,28 +404,43 @@
     <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 
     <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      To benchmark the accuracy of our pulseometer, we compared its calculated heart rate readings against a commercial reference device under two conditions:
-      at rest and immediately after light exercise. Each test was run over a 100-second period with readings taken every 5 seconds, and the error
-      (Calculated − Real) was tracked at each timepoint. The mean absolute error (MAE) was used as our primary accuracy metric.
+      The performance of the pulseometer is highly dependent on how it is worn. We found that, when it is worn 
+		correctly, it can give a quite accurate readout of the users bpm. However, wearing it “correctly” is often 
+		quite difficult and finicky. If the photodiode is too covered, or not covered enough, by the user's finger, 
+		then the signal goes to zero. Similarly, if the user is moving at all, or has not positioned their finger in 
+		just the right way, the signal goes to zero. This finicky nature of the pulseometer would obviously present a 
+		challenge in bringing it to market, but ideally with improved manufacturing methods (injection molding the casing, 
+		using foam or other soft materials to grip the finger better) these problems could be solved. Given these drawbacks, 
+		we tested the pulseometer against a commercial baseline: an apple watch. We collected theoretical bpm data from our 
+		pulseometer and “true” bpm data from the apple watch, taking one data point every 5 seconds for 100 seconds total. 
+		We did this while at rest, then after a brief workout, to compare the difference in product performance. See below.
     </p>
+	  <div style="text-align: center; margin: 2rem 0;">
+        <img src="img/performance_1.png" alt="Case with LCD Screen Slot"
+             style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+    </div>
+	  <div style="text-align: center; margin: 2rem 0;">
+        <img src="img/performance_2.png" alt="Case with LCD Screen Slot"
+             style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+    </div>
 
-    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      <strong>At rest:</strong> MAE = 8.9 bpm (real heart rate averaged ~72 bpm, giving roughly 12% error in percentage terms).<br>
-      <strong>After exercise:</strong> MAE = 12.3 bpm (real heart rate averaged ~85 bpm, giving roughly 14% error in percentage terms).
+	  <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+      One can see there are clearly areas in both graphs where the pulseometer and apple watch agree, 
+		  but this is interspersed with large deviations in behavior from our pulseometer. The “after 
+		  exercise” data clearly show a drop in performance from the “at rest” data, most likely due to 
+		  the fact that the users hands were dirtier, sweatier, and less stable in the pulseometer than 
+		  in the at rest data set.  
     </p>
-
-    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      The error plot shows that performance degrades noticeably during and after exercise, with the after-exercise readings swinging further from zero
-      than the at-rest readings. The dominant source of this degradation appears to be grip and orientation of the finger inside the clip — when the finger
-      shifted even slightly, the optical path between the IR LED and photodiode changed enough to throw off the prominence-based peak detection. This is
-      consistent with the finding from the code development phase, where finger orientation (nail-side down with light contact) had a larger effect on
-      signal quality than any single circuit or software parameter.
+	  <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+      We quantified the error in these data sets by finding the mean absolute error (MAE) across 
+		  the 100 second time frame. We found that the at rest data had an MAE of 8.9bpm, while the 
+		  after exercise data had an MAE of 12.3bpm, where most of this error comes from the large 
+		  spikes and drops in the pulseometer, created by slight change in the users movement. We 
+		  visualized this error by showing the value calculated-real bpm over time. 
     </p>
-
-    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
-      In short, the device is reasonably accurate when the user is still and the finger is well-seated, but performance is entirely dependent on grip
-      and orientation. Improving consistency under movement is a clear next-step area, addressed in the Next Steps section below.
-    </p>
+	  <div style="text-align: center; margin: 2rem 0;">
+        <img src="img/performance_3" alt="Case with LCD Screen Slot"
+             style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">	  
   </section>
 
   <!-- Challenges -->
@@ -561,7 +585,7 @@
     </h2>
     <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
 
-    <a href="assets/Preliminary Design Report.pdf" target="_blank" rel="noopener"
+    <a href="assets/Final Design Report.pdf" target="_blank" rel="noopener"
        class="btn m-2"
        style="color:black; border:1px solid black; z-index: 1000; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
       Open Report (PDF)
