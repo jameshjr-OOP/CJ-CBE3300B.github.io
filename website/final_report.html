@@ -1,1 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CBE 3300B | Pulseometer Project</title>
 
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-light text-dark"
+  style="font-family:'Times New Roman', Times, serif;">
+
+  <!-- Header -->
+  <header class="text-center py-3" style="background-color:#011F5B; color:white; font-family: Arial, Helvetica, sans-serif; padding:0.50rem; padding-top:3rem; padding-bottom:3rem;font-weight: bold;">
+	<div style="display:flex; align-items:center; justify-content:center; position:relative;">
+	    <!-- Logo (far left) -->
+	    <img src="img/penn_logo.png" alt="Penn Engineering" style="height:100px; position:absolute; left:0;">
+	
+	    <!-- Centered title block -->
+	    <div style="text-align:center; margin-bottom:0.5rem;">
+	      <h1 style="margin:0; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
+	        CROI | Pulseometer Technology
+	      </h1>
+	      <h2 style="margin:0.3rem 0 0; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
+	        Minimum Viable Product
+	      </h2>
+	    </div>
+  	</div>
+
+	<nav style="position: sticky; top: 0; width: 100%; background-color:#011F5B; color:white; text-align: center; z-index: 1000; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
+	  <a href="#summary" class="btn m-2" style="color:white; border:1px solid white;">
+	    Summary
+	  </a>
+		<a href="#3dprint" class="btn m-2" style="color:white; border:1px solid white;">
+	    Final Design
+	  </a>
+		<a href="#code" class="btn m-2" style="color:white; border:1px solid white;">
+	    Final Code
+	  </a>
+		</a>
+		<a href="#circuitdesign" class="btn m-2" style="color:white; border:1px solid white;">
+	    Circuit
+	  </a>
+		</a>
+		<a href="#methodology" class="btn m-2" style="color:white; border:1px solid white;">
+	    Methodology
+	  </a>
+	</nav>
+  </header>
+
+  <!-- Introduction -->
+  <section id="summary" class="container py-3">
+  <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
+    Summary
+  </h2>
+  <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+	  
+  <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+      This page is a reflection of the updates, alterations, and functions of the Minimum Viable Product from the intermediate design prototype (Mark II).
+	  Below is a list of all of the progress that has been made since the initial design presentation. 
+  </p>
+
+  <ol style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif; padding-left: 2rem;">
+  		<li>Designed and built a housing case to hold the Arduino, circuitry, and LCD screen as one unit</li>
+		<li>Made the device fully standalone</li>
+		<li>Removed the Savitzky-Golay filter from the code</li>
+		<li>Altered parameters in the code to reflect what was tested</li>
+		<li>Added a separate a PROM_LOOKBACK parameter</li>
+		<li>Switched the BPM calculation to median of peak intervals</li>
+	</ol>
+	  
+  </section>
+
+	<!-- MVP Design -->
+  <section id="3dprint" class="container py-3">
+  <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
+    Minimum Viable Product Design
+  </h2>
+  <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+	  
+  <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+      Between the intermediate prototype and the MVP, the finger clip design itself was not changed - the clip from Mark II proved adequate, so the focus shifted to building a 
+	  proper housing for everything else. The main goal of this stage was to design a case that fit the MVP perfectly, holding the Arduino, the circuitry, and the LCD screen 
+	  together as one unit. With the casing in place, the device is now fully standalone: the user no longer needs a laptop to read the BPM, since the LCD screen mounted in 
+	  the case displays it directly.
+  </p>
+
+<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+      To briefly describe the safety of our product; it is very safe. All wires and circuits are contained, it runs on low voltage, and LEDs do not overheat. 
+	Overall there are no safety issues with our minimum viable product.
+  </p>
+	  
+  <div style="text-align: center; margin: 2rem 0;">
+		<img src="img/mark II fingerclip.png" alt="Circuit Diagram"
+			style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+	</div>
+	  <div style="text-align: center; margin: 2rem 0;">
+		<img src="img/case with LCD screen slot.png" alt="Circuit Diagram"
+			style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+	</div>
+	  
+  </section>
+
+	<!-- MVP Code -->
+  <section id="code" class="container py-3">
+  <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
+    Minimum Viable Product Code
+  </h2>
+  <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+	  
+  <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+    From the intermediate prototype to the MVP, the signal processing pipeline was rebuilt to better match what the 
+	  hardware was actually delivering. The Savitzky-Golay filter from the intermediate code was removed entirely; at 
+	  the new sampling rate, the filter window was wider than a single heartbeat and was smearing out the very peaks we 
+	  were trying to detect. The sampling rate was lowered from 50 Hz to 20 Hz, which counterintuitively gave a cleaner 
+	  signal because the slower rate let the hardware filter do its job without the higher-frequency noise being captured. 
+	  The analysis window was resized from 200 samples to 80 samples to keep the 4-second time window at the new rate, and the 
+	  minimum-distance parameter was scaled accordingly (25 → 10 samples) to maintain the same 500 ms peak-to-peak floor. A new 
+	  PROM_LOOKBACK parameter (5 samples) was introduced and decoupled from the minimum-distance value, because at 20 Hz a single 
+	  heartbeat dip is only about 7 samples wide and the prominence calculation was reaching into the neighboring beat and getting 
+	  corrupted. The prominence threshold was raised from 0.003 to 0.005 once we measured the clean gap between real peak heights 
+	  (0.006–0.012) and the noise floor (under 0.003). Finally, the BPM calculation was switched from the mean of peak intervals to the 
+	  median, so a single mis-detected peak can no longer skew the entire reading.
+  </p>
+
+    <div class="ratio" style="--bs-aspect-ratio: 75%; margin-bottom: 2rem;">
+  <iframe
+    src="https://docs.google.com/document/d/e/2PACX-1vRrNKPPRGnonvx-_UCp78UxX-QI6uK6WPizi-6CH4XmABQ5ZQGq_6KTvMx9OeurSNMZ7WyUQG9nKbX9/pub?embedded=true"
+    style="border: 3px solid #011F5B; background-color: white;"
+    loading="lazy">
+  </iframe>
+</div>
+
+<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+    The methodology behind these changes was driven entirely by looking at raw data first, rather than guessing 
+	at parameters. We started by writing a minimal test sketch that did nothing but read the analog pin and print 
+	the value, with no filtering or peak detection in the way. By capturing roughly 100 consecutive raw samples while 
+	holding a finger still on the sensor and laying them out in sequence, we could count real heartbeats by eye and measure 
+	their actual depth in ADC counts. This revealed two important things: the hardware filter was producing a clean, recognizable 
+	PPG waveform (we had been blaming the hardware for issues that were actually downstream), and finger orientation mattered far 
+	more than we realized — placing the finger nail-side down with light contact gave dramatically better signal than pressing the 
+	pad firmly against the sensor. To debug the full pipeline, we added diagnostic Serial output to every BPM update cycle: the peak count, 
+	the prominence of every accepted peak, and the largest prominence that was still rejected. By printing these every two seconds and watching 
+	them scroll, we could see in real time whether the threshold was well-placed (clean gap between accepted and rejected values), whether the filter 
+	was hurting the signal (accepted prominences much smaller than the raw-data measurements suggested they should be), and whether the BPM swings 
+	were being driven by a few outlier peaks. Each parameter change was followed by another diagnostic run to confirm the improvement was real, not 
+	just a one-time good cycle.
+  </p>
+		
+  </section>
+
+<!-- Circuit Design & Signal Processing -->
+  <section id="circuitdesign" class="container py-3">
+    <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
+		Circuit Design & Signal Processing
+	</h2>
+	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Most current circuit design shown below:
+	</p>
+
+	<div style="text-align: center; margin: 2rem 0;">
+		<img src="img/circuit_design.png" alt="Circuit Diagram"
+			style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+	</div>
+		  
+    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+			This circuit is made up of four components. Going left to right, the first component is the finger cuff, 
+		this is where the patient interacts with the device. The finger cuff will be in the shape of a finger clip, with the 
+		IR LED and the photodiode positioned on opposite sides of the finger. The photodiode converts light into electrical 
+		current with a high sensitivity and linearity, which is helpful for the small signals we are working with. The second 
+		component is the transimpedance amplifier (TIA). The current from the photodiode flows to the negative terminal of the 
+		op-amp and through the gain-setting resistor. This creates a voltage at the output of the op-amp that is proportional 
+		to the input current - the capacitor helps reduce noise. Next is a simple highpass filter; we are removing the DC baseline 
+		signal that comes from the natural absorbance and scattering from the tissue. The last component is a non-inverting gain op-amp. 
+		This amplifies the signal by a factor of R2/R1 (the ratio of the resistor in the feedback loop to the resistor connected to ground). 
+		The capacitor in this stage blocks the DC signal that we added in the previous stage, amplifying only the AC signal that we care about.
+	</p>
+		
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		The goal of this whole process is to isolate the signal we care about (absorbance from oxygenated hemoglobin)
+		and amplify it while removing background signal / noise. In this circuit there is already signal processing with 
+		multiple built-in filters, but there is more signal processing that has to happen in arduino. In order to remove 
+		background noise from the environment, we can use background subtracted signal. We blink the IR LED on and off (50-500Hz) 
+		and measure the signal in the on versus off state. Subtracting these two values will give us a reading that is roughly 
+		independent of the surrounding conditions - like ambient lighting or different placements of the device on the finger. 
+		Furthermore, in order to give a heart rate in bpm, it is necessary to real-time peak detection on the signal. This peak 
+		detection becomes very hard with noisy signal, but assuming we can tune our filter appropriately, this peak detection can 
+		be done with a simple cut off. If the signal is higher than some predetermined baseline and the signal goes from increasing 
+		to decreasing (instantaneous derivative = 0) then we can mark a peak. Time average between peaks gives the users real-time bpm. 
+	</p>
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		The circuit that runs the MVP has stayed consistent the whole time.
+		We also added an LCD screen to read the BPM from the pulseometer and portray a heart or skull depending on the pulseometer reading.
+		The screen circuitry is shown below.
+	</p>
+
+	<div style="text-align: center; margin: 2rem 0;">
+		<img src="img/LCD_circuit_diagram.png" alt="Circuit Diagram"
+			style="max-width: 90%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+	</div>
+	  
+  </section>
+	
+<!-- Methodology -->
+  <section id="methodology" class="container py-3">
+    <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
+		Methodology & Theory
+	</h2>
+	<hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+	  
+    <p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Our pulseometer, like commercial products, is based on photoplethysmography (PPG). PPG is an optical 
+		technique based on the Beer-Lambert law, and it can be used to measure physiologic information about a 
+		patient. When a patient’s skin is illuminated with specific wavelengths of light, the absorbance fluctuates 
+		in accordance with the flow of blood through that area of tissue. If one can measure this real-time absorbance, 
+		it is possible to extract information about not only heart rate, but blood oxygen saturation, respiratory rate, 
+		and even sleep quality
+	</p>
+
+	<div style="display:flex; justify-content:center; align-items:flex-start; gap:2rem; margin:2rem 0;">
+  		<img src="img/scatter_ill_img.png" alt="Scatter Illustration"
+      	 	style="width:35%; padding:1rem; border:3px solid #011F5B; background-color:white;">
+
+  		<img src="img/pen_depth_img.png" alt="PPG Depth Diagram"
+       		style="width:30%; padding:1rem; border:3px solid #011F5B; background-color:white;">
+	</div>
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Our project will use transmittance PPG, where the light source is positioned opposite 
+		to the light collecting device, so the signal must travel through the appendage (fingertip) 
+		as demonstrated in the figure. In order to pick up small absorbance changes in pulsatile artery blood, 
+		we need to understand the optical properties of tissue and blood. Considering we are using transmittance 
+		PPG, light must be able to travel through the fingertip without getting completely absorbed or scattered out. 
+		Light scattering in tissue can be modeled with a power law relationship:
+	</p>
+
+	<div style="text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 1.5rem; margin: 1.5rem 0;">
+  		μ<sub>s</sub><sup>′</sup> ∝ λ<sup>−b</sup>
+	</div>
+
+	<ul style="list-style: none; font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+	  	<li>μ<sub>s</sub><sup>′</sup> = scattering coefficient [1/length]</li>
+		<li>λ = wavelength of light</li>
+		<li>b =  scattering “strength” [dimensionless]</li>
+	</ul>
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Depending on the tissue, b could be anywhere between 0.7-1.5. It is clear that as wavelength decreases, 
+		scattering increases, and we see a similar trend for absorption. Absorption follows the Beer-Lambert law:
+	</p>
+
+	<div style="text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 1.5rem; margin: 1.5rem 0;">
+  		A = &epsilon;Lc
+	</div>
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Which can be re-expressed as:
+	</p>
+	<div style="text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 1.5rem; margin: 1.5rem 0;">
+  		<span style="display:inline-block;">
+    		<span style="font-style: italic;">I</span>/<span style="font-style: italic;">I</span><sub>0</sub>
+    			&nbsp;=&nbsp;
+    			10<sup>−A</sup>
+    			&nbsp;=&nbsp;
+    			10<sup>−εLc</sup>
+    			&nbsp;=&nbsp;
+   				e<sup>−μ<sub>a</sub>A</sup>
+  		</span>
+	</div>
+
+	<ul style="list-style: none; font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+	  	<li>A = Absorbance [dimensionless]</li>
+		<li>ε = molar extinction coefficient [1 / concentration*length]</li>
+		<li>L = path length</li>
+		<li>c = concentration</li>
+		<li>I<sub>0</sub> = Incident intensity [power/area]</li>
+		<li>I = transmitted intensity [power/area]</li>
+		<li>&mu;<sub>a</sub> = absorption coefficient [1/length]</li>
+	</ul>
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Re-arranging the expressions above we see that &mu;<sub>a</sub> ∝ c&epsilon;. However, in tissue samples this becomes 
+		slightly more complicated, as the Beer-Lambert law assumes the presence of only one absorber. In skin and tissue there 
+		are many absorbers, so we can express this with a sum:
+	</p>
+
+	<div style="text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 1.5rem; margin: 1.5rem 0;">
+  		μ<sub>a</sub> ∝ Σ<sub>i</sub> c<sub>i</sub> ε<sub>i</sub>
+	</div>
+
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Each of these absorbers has slightly different molar extinction coefficients (melanin and other chromophores
+		in the skin exhibit strong light absorption in the 200-500nm range, whereas water and lipids become more 
+		significant past 800nm). Absorbance is not as simple as scattering, but in general molar extinction coefficients for 
+		relevant organic molecules in the skin become stronger at lower wavelengths. Therefore if the goal is for light to travel 
+		all the way through tissue, it is more helpful to use a higher wavelength of light. It must still be a wavelength that can 
+		pick up on vascular activity; that is, it must be absorbed or scattered just enough so that we can detect a change when blood 
+		flow is occurring.
+	</p>
+
+	<div style="text-align: center; margin: 2rem 0;">
+		<img src="img/absorb_co_img.png" alt="Absorption Coefficient Graph"
+			style="max-width: 30%; padding: 1rem; border: 3px solid #011F5B; background-color: white; ">
+	</div>
+	  
+	<p style="font-size: 1.25rem; font-family: Georgia, 'Times New Roman', serif;">
+		Deoxygenated and oxygenated hemoglobin absorb some wavelengths light equally (red-NIR), but some wavelengths differently, 
+		and this contrast allows us to collect absorbance data. Infrared light (850-1000nm) is more absorbed by oxygenated hemoglobin, 
+		while deoxygenated hemoglobin has stronger absorption of red light (650–750nm). In commercial devices, the difference between 
+		these absorbance ranges allows one to measure blood oxygen saturation. However, for the purpose of this device we will therefore
+		be using infrared light, as it will have enough penetration depth into the tissue to be detected with transmittance PPG while 
+		also being sufficiently scattered / absorbed by oxygenated blood for us to detect it.  
+	</p>  
+  </section>
+	
+  <!-- References -->
+  <section id="ref" class="container py-3">
+    <h2 style="color:#990000; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 2.5rem; padding-top: 1.5rem;">
+      References
+    </h2>
+    <hr style="border: none; border-top: 2px solid black; margin: 0.75rem 0 1.5rem 0;">
+	  
+	  <ol style="list-style: none; font-family: Georgia, 'Times New Roman', serif; font-size: 1rem; padding-left: 2.5rem;">
+		  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		    Cleveland Clinic. “Pulse Oximetry: Function, Method & Readings.”
+		    Last updated September 23, 2025. Accessed February 2, 2026.
+		    https://my.clevelandclinic.org/health/diagnostics/pulse-oximetry
+		  </li>
+		
+		  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		    Jacques, Steven L. “Optical Properties of Biological Tissues: A Review.”
+		    <em>Physics in Medicine & Biology</em> 58, no. 11 (2013): R37–R61.
+		    https://doi.org/10.1088/0031-9155/58/11/R37
+		  </li>
+		
+		  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		    Mancini, D. M., L. Bolinger, H. Li, K. Kendrick, B. Chance, and J. R. Wilson.
+		    “Validation of Near-Infrared Spectroscopy in Humans.”
+		    <em>Journal of Applied Physiology</em> 77, no. 6 (1994): 2740–2747.
+		    https://doi.org/10.1152/jappl.1994.77.6.2740
+		  </li>
+		
+		  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		    Ryals, S. A., Chang, S., Schutte-Rodin, S., et al.
+		    “Photoplethysmography—New Applications for an Old Technology.”
+		    <em>Journal of Clinical Sleep Medicine</em> 19, no. 1 (2023): 189–195.
+		    https://doi.org/10.5664/jcsm.10300
+		  </li>
+		
+		  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		    Scholkmann, Felix, and Martin Wolf.
+		    “General Equation for the Differential Pathlength Factor of the Frontal Human Head.”
+		    <em>Journal of Biomedical Optics</em> 18, no. 10 (2013): 105004.
+		    https://doi.org/10.1117/1.JBO.18.10.105004
+		  </li>
+		
+		  <li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		    MarketsandMarkets.
+		    “Wearable Healthcare Devices Market: Growth, Size, Share, and Trends.”
+		    (2025).
+		    https://www.marketsandmarkets.com/Market-Reports/wearable-medical-device-market-81753973.html
+		  </li>
+		  
+	  	<li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		  Arduino Documentation.
+		  "LCD Displays: Schematic."
+		  Arduino.cc.
+		  https://docs.arduino.cc/learn/electronics/lcd-displays/#schematic
+		</li>
+		  
+		<li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		  Abhigyan.
+		  "Introduction to the Savitzky-Golay Filter: A Comprehensive Guide Using Python."
+		  Medium / Python Engineered.
+		  (2023).
+		  https://medium.com/pythoneers/introduction-to-the-savitzky-golay-filter-a-comprehensive-guide-using-python-b2dd07a8e2ce
+		</li>
+		  
+		<li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		  Yuri.
+		  "Peak Detection."
+		  archive.yuri.is.
+		  https://archive.yuri.is/observing/peak-detection/
+		</li>
+
+		<li style="margin-bottom: 0.25rem; text-indent: -1.5rem; padding-left: 1.5rem;">
+		  fiona-.
+		  "Pulse Oximeter."
+		  [projecthub.arduino.cc](http://projecthub.arduino.cc).
+		  https://projecthub.arduino.cc/fiona-/pulse-oximeter-1298d5
+		</li>
+	  </ol>
+  </section>
+
+  
+  <!-- Footer -->
+  <footer
+    class="text-center" style="background-color:#011F5B; color:white; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
+    <p style="margin:0;">
+		CROI | Cardiovascular Rhythmic Optical Innovation
+	</p>
+  </footer>
+
+</body>
+</html>
